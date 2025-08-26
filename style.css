@@ -1,0 +1,57 @@
+.header {
+    background: linear-gradient(90deg, #1a2c6e 60%, #6f0505 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Cambiado */
+    padding: 18px 40px;
+    box-shadow: 0 4px 16px rgba(26,44,110,0.10);
+    border-radius: 0 0 18px 18px;
+    position: relative; /* Necesario para el centrado absoluto */
+}
+
+.logo {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-shadow: 1px 2px 8px rgba(0,0,0,0.10);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    z-index: 2;
+}
+
+.nav-centro {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.lista {
+    list-style: none;
+    display: flex;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+}
+
+.lista li {
+    margin: 0;
+}
+
+.lista a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 25px;
+    padding: 8px 18px;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(76,175,80,0.05);
+}
+
+.lista a:hover, .lista a:focus {
+    background: #fff;
+    color: #1a2c6e;
+    box-shadow: 0 4px 16px rgba(76,175,80,0.15);
+    outline: none;
+}
