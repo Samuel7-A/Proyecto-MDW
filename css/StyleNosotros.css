@@ -1,0 +1,19 @@
+/* Fondo gris para secciones de Reseña, Misión y Visión */
+.bg-light-gray {
+  background-color: #f2f2f2; /* gris claro */
+}
+
+/* Títulos de esas secciones en rojo */
+.section-title-red {
+  color: #b30000; /* rojo fuerte */
+}
+
+/* Título de Talleres en azul */
+.title-blue {
+  color: #0044cc;
+}
+
+/* Título de Galería en rojo */
+.title-red {
+  color: #cc0000;
+}
