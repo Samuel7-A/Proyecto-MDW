@@ -55,86 +55,184 @@
             </div>
         </nav>
     </header>
-    <main class="main-background">
-        <div class="container py-5">
-            <div
-                class="d-flex flex-column flex-lg-row justify-content-lg-between align-items-center text-center text-lg-start p-5 rounded-3 bg-light bg-opacity-75 border">
-                <div>
-                    <h2 class="fw-bold">¿Listo para mejorar tus notas?</h2>
-                    <p class="mb-0 fs-5">Contáctanos y descubre cómo podemos ayudarte a alcanzar tu máximo potencial.
-                    </p>
+    <main >
+        <section class="main-background">
+            <div class="container py-5">
+                <div
+                    class="d-flex flex-column flex-lg-row justify-content-lg-between align-items-center text-center text-lg-start p-5 rounded-3 bg-light bg-opacity-75 border">
+                    <div>
+                        <h2 class="fw-bold">¿Listo para mejorar tus notas?</h2>
+                        <p class="mb-0 fs-5">Contáctanos y descubre cómo podemos ayudarte a alcanzar tu máximo potencial.
+                        </p>
+                    </div>
+                    <button type="button" class="btn btn-dark btn-lg flex-shrink-0 ms-lg-4 mt-4 mt-lg-0"
+                        data-bs-toggle="modal" data-bs-target="#contactModal">
+                        Contáctanos
+                    </button>
                 </div>
-                <button type="button" class="btn btn-dark btn-lg flex-shrink-0 ms-lg-4 mt-4 mt-lg-0"
-                    data-bs-toggle="modal" data-bs-target="#contactModal">
-                    Contáctanos
-                </button>
             </div>
-        </div>
 
-        <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="row g-3 mb-3">
-                                <div class="col-md-4">
-                                    <label for="nombre" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="nombre" required>
+            <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-4">
+                                        <label for="nombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="nombre" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
+                                        <input type="text" class="form-control" id="apellidoPaterno" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
+                                        <input type="text" class="form-control" id="apellidoMaterno" required>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
-                                    <input type="text" class="form-control" id="apellidoPaterno" required>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="distrito" class="form-label">Distrito</label>
+                                        <input type="text" class="form-control" id="distrito" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="dni" class="form-label">DNI</label>
+                                        <input type="text" class="form-control" id="dni" required pattern="\d{8}"
+                                            title="El DNI debe tener 8 dígitos.">
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
-                                    <input type="text" class="form-control" id="apellidoMaterno" required>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="telefono" class="form-label">Teléfono/Celular</label>
+                                        <input type="tel" class="form-control" id="telefono" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="nivel" class="form-label">Nivel</label>
+                                        <select class="form-select" id="nivel" required>
+                                            <option selected disabled value="">Selecciona un nivel...</option>
+                                            <option>Escolar</option>
+                                            <option>Academia</option>
+                                            <option>Universitario</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row g-3 mb-3">
-                                <div class="col-md-6">
-                                    <label for="distrito" class="form-label">Distrito</label>
-                                    <input type="text" class="form-control" id="distrito" required>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="email" placeholder="email@ejemplo.com"
+                                        required>
+                                    <div id="emailHelp" class="form-text">Nunca compartiremos tu correo.</div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="dni" class="form-label">DNI</label>
-                                    <input type="text" class="form-control" id="dni" required pattern="\d{8}"
-                                        title="El DNI debe tener 8 dígitos.">
+                                <div class="modal-footer px-0">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Enviar</button>
                                 </div>
-                            </div>
-                            <div class="row g-3 mb-3">
-                                <div class="col-md-6">
-                                    <label for="telefono" class="form-label">Teléfono/Celular</label>
-                                    <input type="tel" class="form-control" id="telefono" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="nivel" class="form-label">Nivel</label>
-                                    <select class="form-select" id="nivel" required>
-                                        <option selected disabled value="">Selecciona un nivel...</option>
-                                        <option>Escolar</option>
-                                        <option>Academia</option>
-                                        <option>Universitario</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control" id="email" placeholder="email@ejemplo.com"
-                                    required>
-                                <div id="emailHelp" class="form-text">Nunca compartiremos tu correo.</div>
-                            </div>
-                            <div class="modal-footer px-0">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-primary">Enviar</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
+        
+                <!-- Section: NIVELES -->
+        <section class="container my-5">
+        <div class="row shadow rounded-3 overflow-hidden bg-white">
+            
+            <!-- Columna izquierda: texto -->
+            <div class="col-lg-6 d-flex flex-column justify-content-center p-5 text-center text-lg-start">
+            <h2 class="fw-bold mb-3">Conoce los distintos niveles de nuestros cursos</h2>
+            <p class="fs-5 text-muted">
+                Conoce los distintos niveles académicos de los diversos cursos que brindamos para potenciar tu aprendizaje 
+                en distintas áreas. ¡Aprende con nosotros y alcanza tu máximo nivel!
+            </p>
+            
+            <!-- Niveles -->
+            <p class="fw-semibold mt-3">Nuestros niveles:</p>
+            <ul class="list-unstyled">
+                <li><i class="bi bi-mortarboard text-primary me-2"></i> Escolar (colegios y refuerzos)</li>
+                <li><i class="bi bi-journal-bookmark text-success me-2"></i> Academia (preparación y especialización)</li>
+                <li><i class="bi bi-building text-danger me-2"></i> Universidad (cursos de nivel superior)</li>
+            </ul>
+            </div>
+
+            <!-- Columna derecha: imagen + botón -->
+            <div class="col-lg-6 position-relative p-0">
+            <img src="../img/niveles.jpg" alt="Cursos" class="img-fluid w-100 h-100 object-fit-cover">
+            
+            <!-- Botón encima de la imagen -->
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <a href="niveles.html" class="btn btn-dark btn-lg px-5 py-3 fs-4 shadow">
+                Ver los niveles
+                </a>
+            </div>
+            </div>
+
         </div>
+        </section>
+
+        <!-- Section: CURSOS -->
+        <section class="container my-5">
+        <div class="row shadow rounded-3 overflow-hidden bg-white">
+            
+            <!-- Columna izquierda: texto -->
+            <div class="col-lg-6 d-flex flex-column justify-content-center p-5 text-center text-lg-start">
+            <h2 class="fw-bold mb-3">Conoce nuestros cursos</h2>
+            <p class="fs-5 text-muted">
+                Conoce nuestros diversos cursos que brindamos para potenciar tu aprendizaje 
+                en distintas áreas. ¡Aprende con nosotros y alcanza tu máximo nivel!
+            </p>
+            </div>
+
+            <!-- Columna derecha: imagen + botón -->
+            <div class="col-lg-6 position-relative p-0">
+            <img src="../img/cursos.jpg" alt="Cursos" class="img-fluid w-100 h-100 object-fit-cover">
+            
+            <!-- Botón encima de la imagen -->
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <a href="cursos.html" class="btn btn-dark btn-lg px-5 py-3 fs-4 shadow">
+                Ver los cursos
+                </a>
+            </div>
+            </div>
+
+        </div>
+        </section>
+
+        <!-- Section: CONOCENOS -->
+        <section class="container my-5">
+        <div class="row shadow rounded-3 overflow-hidden bg-white">
+            
+            <!-- Columna izquierda: texto -->
+            <div class="col-lg-6 d-flex flex-column justify-content-center p-5 text-center text-lg-start">
+            <h2 class="fw-bold mb-3">Conócenos!!!</h2>
+                <p class="fs-5 text-muted">
+                    Somos una academia virtual comprometida con la educación de calidad.  
+                    Nuestro objetivo es brindar cursos accesibles y efectivos para estudiantes  
+                    de nivel escolar, académico y universitario, ayudándolos a desarrollar  
+                    habilidades que les permitan crecer personal y profesionalmente.
+                </p>
+            </div>
+
+            <!-- Columna derecha: imagen + botón -->
+            <div class="col-lg-6 position-relative p-0">
+            <img src="../img/conocenos.jpg" alt="Cursos" class="img-fluid w-100 h-100 object-fit-cover">
+            
+            <!-- Botón encima de la imagen -->
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <a href="Nosotros.html" class="btn btn-dark btn-lg px-5 py-3 fs-4 shadow">
+                Ver los cursos
+                </a>
+            </div>
+            </div>
+
+        </div>
+        </section>
+
+
     </main>
 
     <!-- Footer -->
