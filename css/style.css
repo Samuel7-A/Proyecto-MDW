@@ -4,5 +4,10 @@
     background-size: cover; /* Hace que la imagen cubra todo el espacio */
     background-position: center; /* Centra la imagen */
     background-attachment: fixed; /* Crea un efecto parallax al hacer scroll */
-    padding: 20px; /* Espaciado interno */
+    padding: 20px; ;/* Espaciado interno */
+}
+
+.hover-blur:hover {
+  filter: blur(4px); /* cantidad de desenfoque */
+  transition: filter 0.3s ease-in-out; /* animación suave */
 }

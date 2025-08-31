@@ -14,20 +14,19 @@
 </head>
 
 <body class="bg-light bg-opacity-10 d-flex flex-column min-vh-100">
-    <header class="bg-dark shadow-sm">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
+  <header class="bg-dark shadow-sm">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div class="container">
 
-                <a class="navbar-brand text-light fw-bold" href="index.html">MDW</a>
+             <a class="navbar-brand text-light fw-bold" href="index.html">MDW</a>
 
-                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                     aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link active text-light" href="index.html">Inicio</a>
                         </li>
@@ -41,9 +40,11 @@
                                 Cursos
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownCursos">
-                                <li><a class="dropdown-item" href="cursos.html#curso1">Introducción a la Ciberseguridad</a></li>
+                                <li><a class="dropdown-item" href="cursos.html#curso1">Introducción a la
+                                        Ciberseguridad</a></li>
                                 <li><a class="dropdown-item" href="cursos.html#curso2">Redes y Conectividad</a></li>
-                                <li><a class="dropdown-item" href="cursos.html#curso3">Seguridad en Redes Avanzada</a></li>
+                                <li><a class="dropdown-item" href="cursos.html#curso3">Seguridad en Redes Avanzada</a>
+                                </li>
                             </ul>
                         </li>
 
@@ -51,6 +52,94 @@
                             <a class="nav-link text-light" href="niveles.html">Niveles</a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
+                                data-bs-target="#loginModal">
+                                Login
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Modal del Login -->
+                    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="loginModalLabel">Inicio de Sesión</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="loginId" class="form-label">ID de Usuario</label>
+                                            <input type="text" class="form-control" id="loginId" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="loginPassword" class="form-label">Contraseña</label>
+                                            <input type="password" class="form-control" id="loginPassword" required>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-between">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal"
+                                                data-bs-dismiss="modal" class="text-muted"><small>¿No tienes cuenta?
+                                                    Regístrate aquí</small></a>
+                                            <div>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="submit" class="btn btn-primary">Login</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal del registro -->
+                    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="registerModalLabel">Crear una Cuenta</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="registerId" class="form-label">ID de Usuario</label>
+                                            <input type="text" class="form-control" id="registerId" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="registerEmail" class="form-label">Correo Electrónico</label>
+                                            <input type="email" class="form-control" id="registerEmail" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="registerPassword" class="form-label">Contraseña</label>
+                                            <input type="password" class="form-control" id="registerPassword" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                                            <input type="password" class="form-control" id="confirmPassword" required>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-between">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal"
+                                                data-bs-dismiss="modal" class="text-muted"><small>¿Ya tienes cuenta?
+                                                    Inicia Sesión</small></a>
+                                            <div>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="submit" class="btn btn-primary">Registrarse</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -138,7 +227,7 @@
             </div>
         </section>
         
-                <!-- Section: NIVELES -->
+        <!-- Section: NIVELES -->
         <section class="container my-5">
         <div class="row shadow rounded-3 overflow-hidden bg-white">
             
@@ -161,7 +250,7 @@
 
             <!-- Columna derecha: imagen + botón -->
             <div class="col-lg-6 position-relative p-0">
-            <img src="../img/niveles.jpg" alt="Cursos" class="img-fluid w-100 h-100 object-fit-cover">
+            <img src="../img/niveles.jpg" alt="Cursos" class="img-fluid w-100 h-100 object-fit-cover hover-blur">
             
             <!-- Botón encima de la imagen -->
             <div class="position-absolute top-50 start-50 translate-middle">
@@ -189,7 +278,7 @@
 
             <!-- Columna derecha: imagen + botón -->
             <div class="col-lg-6 position-relative p-0">
-            <img src="../img/cursos.jpg" alt="Cursos" class="img-fluid w-100 h-100 object-fit-cover">
+            <img src="../img/cursos.jpg" alt="Cursos" class="img-fluid w-100 h-100 object-fit-cover hover-blur">
             
             <!-- Botón encima de la imagen -->
             <div class="position-absolute top-50 start-50 translate-middle">
@@ -219,12 +308,12 @@
 
             <!-- Columna derecha: imagen + botón -->
             <div class="col-lg-6 position-relative p-0">
-            <img src="../img/conocenos.jpg" alt="Cursos" class="img-fluid w-100 h-100 object-fit-cover">
+            <img src="../img/conocenos.jpg" alt="Cursos" class="img-fluid w-100 h-100 object-fit-cover hover-blur">
             
             <!-- Botón encima de la imagen -->
             <div class="position-absolute top-50 start-50 translate-middle">
                 <a href="Nosotros.html" class="btn btn-dark btn-lg px-5 py-3 fs-4 shadow">
-                Ver los cursos
+                Más información
                 </a>
             </div>
             </div>
