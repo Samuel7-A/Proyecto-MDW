@@ -14,33 +14,136 @@
 </head>
 
 <body>
-  <header class="bg-dark shadow-sm">
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <div class="container">
-        <a class="navbar-brand text-light fw-bold" href="index.html">MDW</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link active text-light" aria-current="page" href="index.html">Inicio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-light" href="Nosotros.html">Conócenos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-light" href="cursos.html">Cursos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-light" href="niveles.html">Niveles</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
+<header class="bg-dark shadow-sm">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div class="container">
+
+             <a class="navbar-brand text-light fw-bold" href="index.html">MDW</a>
+
+             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                 </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active text-light" href="index.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="Nosotros.html">Conócenos</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownCursos"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Cursos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownCursos">
+                                <li><a class="dropdown-item" href="cursos.html#curso1">Introducción a la
+                                        Ciberseguridad</a></li>
+                                <li><a class="dropdown-item" href="cursos.html#curso2">Redes y Conectividad</a></li>
+                                <li><a class="dropdown-item" href="cursos.html#curso3">Seguridad en Redes Avanzada</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="niveles.html">Niveles</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
+                                data-bs-target="#loginModal">
+                                Login
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Modal del Login -->
+                    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="loginModalLabel">Inicio de Sesión</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="loginId" class="form-label">ID de Usuario</label>
+                                            <input type="text" class="form-control" id="loginId" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="loginPassword" class="form-label">Contraseña</label>
+                                            <input type="password" class="form-control" id="loginPassword" required>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-between">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal"
+                                                data-bs-dismiss="modal" class="text-muted"><small>¿No tienes cuenta?
+                                                    Regístrate aquí</small></a>
+                                            <div>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="submit" class="btn btn-primary">Login</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal del registro -->
+                    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="registerModalLabel">Crear una Cuenta</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="registerId" class="form-label">ID de Usuario</label>
+                                            <input type="text" class="form-control" id="registerId" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="registerEmail" class="form-label">Correo Electrónico</label>
+                                            <input type="email" class="form-control" id="registerEmail" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="registerPassword" class="form-label">Contraseña</label>
+                                            <input type="password" class="form-control" id="registerPassword" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                                            <input type="password" class="form-control" id="confirmPassword" required>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-between">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal"
+                                                data-bs-dismiss="modal" class="text-muted"><small>¿Ya tienes cuenta?
+                                                    Inicia Sesión</small></a>
+                                            <div>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="submit" class="btn btn-primary">Registrarse</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
   <!-- Reseña Histórica -->
   <section class="container my-5 bg-light-gray p-4 rounded">
     <div class="row align-items-center">
