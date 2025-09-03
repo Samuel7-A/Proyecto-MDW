@@ -1,5 +1,12 @@
 # MDW Academy
 
+INTEGRANTES:
+- Alonso Sebastian Zevallos Medina - U21218949
+- García Callupe Jair Adrián - U23260560
+- Ariel Andre Revilla alarcon - U20212197
+- Krhis Crhistoferson Remigio Condori - U23234320
+- Samuel Jeremy Torres Ayala - U23259582
+
 Sitio web de una academia que brinda cursos virtuales similares a plataformas como Coursera o Udemy.  
 El proyecto está dirigido a tres niveles de aprendizaje: **escolar, academia y universidad**.  
 
