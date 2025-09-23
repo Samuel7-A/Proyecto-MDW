@@ -1,6 +1,6 @@
 .main-background {
     /* URL de una imagen de fondo sutil. ¡Puedes cambiarla por la que quieras! */
-    background-image: url('../imagenes/fondo-main.png');
+    background-image: url('../img/fondo-main.png');
     background-size: cover; /* Hace que la imagen cubra todo el espacio */
     background-position: center; /* Centra la imagen */
     background-attachment: fixed; /* Crea un efecto parallax al hacer scroll */
