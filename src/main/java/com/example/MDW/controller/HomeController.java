@@ -23,20 +23,9 @@ public class HomeController {
         this.usuarioService = usuarioService;
     }
 
-    @ModelAttribute
-    public void addUserToModel(HttpSession session, Model model) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        model.addAttribute("usuarioLogueado", usuario);
-    }
-
     @GetMapping("/")
     public String index(Model model) {
         return "index";
-    }
-
-    @GetMapping("/cursos")
-    public String cursos() {
-        return "cursos";
     }
 
     @GetMapping("/niveles")                 
