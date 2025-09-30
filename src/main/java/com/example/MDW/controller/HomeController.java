@@ -1,8 +1,10 @@
 
 package com.example.MDW.controller;
 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.MDW.model.Usuario;
@@ -15,20 +17,24 @@ import org.springframework.ui.Model;
 @Controller
 public class HomeController {
 
-     
+    private final UsuarioService usuarioService;
+
+    public HomeController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
+    @ModelAttribute
+    public void addUserToModel(HttpSession session, Model model) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        model.addAttribute("usuarioLogueado", usuario);
+    }
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("usuarios", usuarioService.listarUsuarios());
         return "index";
     }
 
-    @GetMapping("/cursos")
-    public String cursos() {
-        return "cursos";
-    }
-
-    @GetMapping("/niveles")                 
+    @GetMapping("/niveles")
     public String niveles() {
         return "niveles";
     }
@@ -43,24 +49,17 @@ public class HomeController {
         return "index";
     }
 
-    private final UsuarioService usuarioService;
-
-    public HomeController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
     @PostMapping("/login")
     public String login(@RequestParam String idUsuario,
                         @RequestParam String password,
-                        Model model) {
+                        Model model,
+                        HttpSession session) {
         Usuario usuario = usuarioService.login(idUsuario, password);
         if (usuario != null) {
-            model.addAttribute("usuarioLogueado", usuario);
-            model.addAttribute("usuarios", usuarioService.listarUsuarios());
-            return "index"; // regresa a index
+            session.setAttribute("usuarioLogueado", usuario);
+            return "redirect:/"; // refresca la página
         }
-        model.addAttribute("error", "Credenciales incorrectas o usuario no aceptado");
-        model.addAttribute("usuarios", usuarioService.listarUsuarios());
+        model.addAttribute("error", "Credenciales incorrectas o usuario no registrado");
         return "index";
     }
 
@@ -71,26 +70,17 @@ public class HomeController {
                            Model model) {
         Usuario nuevo = new Usuario(idUsuario, email, password);
         usuarioService.registrar(nuevo);
-        model.addAttribute("mensaje", "Usuario registrado. Espera aprobación.");
-        model.addAttribute("usuarios", usuarioService.listarUsuarios());
+        model.addAttribute("mensaje", "Usuario registrado. Ahora puedes iniciar sesión.");
         return "index";
     }
 
-    @PostMapping("/aceptar")
-    public String aceptarUsuario(@RequestParam String idUsuario, Model model) {
-        usuarioService.activarUsuario(idUsuario);
-        model.addAttribute("usuarios", usuarioService.listarUsuarios());
-        return "index";
+    @GetMapping("/logout")
+    public String logout(HttpSession session, RedirectAttributes redirectAttrs) {
+        session.invalidate();
+        redirectAttrs.addFlashAttribute("mensaje", "Sesión cerrada correctamente");
+        return "redirect:/";
     }
 
-    
-
-@GetMapping("/logout")
-public String logout(HttpSession session, Model model) {
-    session.invalidate();
-    model.addAttribute("mensaje", "Sesión cerrada correctamente");
-    return "index";
-}
 }
 
 
