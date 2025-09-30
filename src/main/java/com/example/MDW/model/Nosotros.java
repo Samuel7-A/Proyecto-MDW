@@ -1,11 +1,11 @@
-package com.example.MDW.Nosotros;
+package com.example.MDW.model;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class NosotrosController {
+public class Nosotros {
 
         @GetMapping("/nosotros")
         public String mostrarNosotros(Model model) {
