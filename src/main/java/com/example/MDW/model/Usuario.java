@@ -4,7 +4,7 @@ public class Usuario {
     private String idUsuario;
     private String email;
     private String password;
-     private String rol = "USER"; // por defecto está pendiente
+    private String rol = "USER"; // por defecto está pendiente
 
     public Usuario(String idUsuario, String email, String password) {
         this.idUsuario = idUsuario;

@@ -34,12 +34,7 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/cursos")
-    public String cursos() {
-        return "cursos";
-    }
-
-    @GetMapping("/niveles")                 
+    @GetMapping("/niveles")
     public String niveles() {
         return "niveles";
     }
