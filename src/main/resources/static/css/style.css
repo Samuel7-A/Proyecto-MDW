@@ -11,3 +11,4 @@
   filter: blur(4px); /* cantidad de desenfoque */
   transition: filter 0.3s ease-in-out; /* animación suave */
 }
+
