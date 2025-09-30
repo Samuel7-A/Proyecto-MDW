@@ -27,15 +27,15 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/niveles")                 
+    @GetMapping("/niveles")
     public String niveles() {
         return "niveles";
     }
 
-    @GetMapping("/Nosotros")
-    public String Nosotros() {
-        return "Nosotros";
-    }
+    // @GetMapping("/Nosotros")
+    // public String Nosotros() {
+    // return "Nosotros";
+    // }
 
     @GetMapping("/index")
     public String pagprincipal() {
@@ -44,9 +44,9 @@ public class HomeController {
 
     @PostMapping("/login")
     public String login(@RequestParam String idUsuario,
-                        @RequestParam String password,
-                        Model model,
-                        HttpSession session) {
+            @RequestParam String password,
+            Model model,
+            HttpSession session) {
         Usuario usuario = usuarioService.login(idUsuario, password);
         if (usuario != null) {
             session.setAttribute("usuarioLogueado", usuario);
@@ -58,9 +58,9 @@ public class HomeController {
 
     @PostMapping("/register")
     public String register(@RequestParam String idUsuario,
-                           @RequestParam String email,
-                           @RequestParam String password,
-                           Model model) {
+            @RequestParam String email,
+            @RequestParam String password,
+            Model model) {
         Usuario nuevo = new Usuario(idUsuario, email, password);
         usuarioService.registrar(nuevo);
         model.addAttribute("mensaje", "Usuario registrado. Ahora puedes iniciar sesión.");
@@ -75,9 +75,3 @@ public class HomeController {
     }
 
 }
-
-
-
-
-
-
