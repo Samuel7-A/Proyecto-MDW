@@ -27,11 +27,6 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/niveles")
-    public String niveles() {
-        return "niveles";
-    }
-
     // @GetMapping("/Nosotros")
     // public String Nosotros() {
     // return "Nosotros";
