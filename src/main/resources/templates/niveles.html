@@ -13,135 +13,177 @@
 </head>
 
 <body class="bg-light bg-opacity-10 d-flex flex-column min-vh-100">
-<header class="bg-dark shadow-sm">
+  <header class="bg-dark shadow-sm">
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
           <div class="container">
 
-             <a class="navbar-brand text-light fw-bold" href="index">MDW</a>
+              <a class="navbar-brand text-light fw-bold" href="index">MDW</a>
+              <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                  aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
 
-             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                 </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                      <li class="nav-item"><a class="nav-link active text-light" href="/">Inicio</a></li>
+                      <li class="nav-item"><a class="nav-link text-light" href="/Nosotros">Conócenos</a></li>
+                      <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownCursos"
+                          role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Cursos
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownCursos">
+                          <li><a class="dropdown-item" href="cursos#curso1">Introducción a la
+                                  Ciberseguridad</a></li>
+                          <li><a class="dropdown-item" href="cursos#curso2">Redes y Conectividad</a></li>
+                          <li><a class="dropdown-item" href="cursos#curso3">Seguridad en Redes Avanzada</a>
+                          </li>
+                      </ul>
+                      </li>
+                      <li class="nav-item"><a class="nav-link text-light" href="/niveles">Niveles</a></li>
+                  </ul>
 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active text-light" href="index">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="Nosotros">Conócenos</a>
-                        </li>
+                  <div th:if="${usuarioLogueado == null}">
+                      <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                  </div>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownCursos"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Cursos
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownCursos">
-                                <li><a class="dropdown-item" href="cursos#curso1">Introducción a la
-                                        Ciberseguridad</a></li>
-                                <li><a class="dropdown-item" href="cursos#curso2">Redes y Conectividad</a></li>
-                                <li><a class="dropdown-item" href="cursos#curso3">Seguridad en Redes Avanzada</a>
-                                </li>
-                            </ul>
-                        </li>
+                  
 
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="niveles.html">Niveles</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <button type="button" class="btn btn-outline-light" data-bs-toggle="modal"
-                                data-bs-target="#loginModal">
-                                Login
-                            </button>
-                        </li>
-                    </ul>
+                  <div th:if="${usuarioLogueado != null}">
+                      <span class="text-white fw-bold ms-2" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
 
-                    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="loginModalLabel">Inicio de Sesión</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="mb-3">
-                                            <label for="loginId" class="form-label">ID de Usuario</label>
-                                            <input type="text" class="form-control" id="loginId" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="loginPassword" class="form-label">Contraseña</label>
-                                            <input type="password" class="form-control" id="loginPassword" required>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-between">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal"
-                                                data-bs-dismiss="modal" class="text-muted"><small>¿No tienes cuenta?
-                                                    Regístrate aquí</small></a>
-                                            <div>
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Cerrar</button>
-                                                <button type="submit" class="btn btn-primary">Login</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                      <a href="/logout" class="btn btn-outline-danger ms-2">Cerrar sesión</a>
+                  </div>
 
-                    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="registerModalLabel">Crear una Cuenta</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="mb-3">
-                                            <label for="registerId" class="form-label">ID de Usuario</label>
-                                            <input type="text" class="form-control" id="registerId" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="registerEmail" class="form-label">Correo Electrónico</label>
-                                            <input type="email" class="form-control" id="registerEmail" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="registerPassword" class="form-label">Contraseña</label>
-                                            <input type="password" class="form-control" id="registerPassword" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                                            <input type="password" class="form-control" id="confirmPassword" required>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-between">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal"
-                                                data-bs-dismiss="modal" class="text-muted"><small>¿Ya tienes cuenta?
-                                                    Inicia Sesión</small></a>
-                                            <div>
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Cerrar</button>
-                                                <button type="submit" class="btn btn-primary">Registrarse</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+                  <!-- Modal Login -->
+                  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                      <form class="modal-content" th:action="@{/login}" method="post">
+                          <div class="modal-header">
+                          <h5 class="modal-title">Inicio de Sesión</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                          </div>
+                          <div class="modal-body">
+                          <div class="mb-3">
+                              <label for="loginId" class="form-label">ID de Usuario</label>
+                              <input type="text" class="form-control" id="loginId" name="idUsuario" autocomplete="off" required>
+                          </div>
+                          <div class="mb-3">
+                              <label for="loginPassword" class="form-label">Contraseña</label>
+                              <input type="password" class="form-control" id="loginPassword" name="password" required>
+                          </div>
+                          </div>
+                          <div class="modal-footer">
+                          <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal"
+                              class="text-muted"><small>¿No tienes cuenta? Regístrate aquí</small></a>
+                          <button type="submit" class="btn btn-primary">Login</button>
+                          </div>
+                      </form>
+                      </div>
+                  </div>
+
+                  <!-- Modal Registro -->
+                  <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                      <form class="modal-content" th:action="@{/register}" method="post" autocomplete="off">
+                          <div class="modal-header">
+                          <h5 class="modal-title">Crear una Cuenta</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
+                          </div>
+                          <div class="modal-body">
+                          <div class="mb-3">
+                              <label for="registerId" class="form-label">ID de Usuario</label>
+                              <input type="text" class="form-control" id="registerId" name="idUsuario" autocomplete="off" required >
+                          </div>
+                          <div class="mb-3">
+                              <label for="registerEmail" class="form-label">Correo Electrónico</label>
+                              <input type="email" class="form-control" id="registerEmail" name="email" autocomplete="off" required>
+                          </div>
+                          <div class="mb-3">
+                              <label for="registerPassword" class="form-label">Contraseña</label>
+                              <input type="password" class="form-control" id="registerPassword" name="password" required>
+                          </div>
+                          </div>
+                          <div class="modal-footer">
+                          <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal"
+                              class="text-muted"><small>¿Ya tienes cuenta? Inicia sesión</small></a>
+                          <button type="submit" class="btn btn-primary">Registrarse</button>
+                          </div>
+                      </form>
+                      </div>
+                  </div>
+
+                  <!-- Modal Contactanos -->
+                  <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                  <form>
+                                      <div class="row g-3 mb-3">
+                                          <div class="col-md-4">
+                                              <label for="nombre" class="form-label">Nombre</label>
+                                              <input type="text" class="form-control" id="nombre" required>
+                                          </div>
+                                          <div class="col-md-4">
+                                              <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
+                                              <input type="text" class="form-control" id="apellidoPaterno" required>
+                                          </div>
+                                          <div class="col-md-4">
+                                              <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
+                                              <input type="text" class="form-control" id="apellidoMaterno" required>
+                                          </div>
+                                      </div>
+                                      <div class="row g-3 mb-3">
+                                          <div class="col-md-6">
+                                              <label for="distrito" class="form-label">Distrito</label>
+                                              <input type="text" class="form-control" id="distrito" required>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <label for="dni" class="form-label">DNI</label>
+                                              <input type="text" class="form-control" id="dni" required pattern="\d{8}"
+                                              title="El DNI debe tener 8 dígitos.">
+                                          </div>
+                                      </div>
+                                      <div class="row g-3 mb-3">
+                                          <div class="col-md-6">
+                                              <label for="telefono" class="form-label">Teléfono/Celular</label>
+                                              <input type="tel" class="form-control" id="telefono" required>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <label for="nivel" class="form-label">Nivel</label>
+                                              <select class="form-select" id="nivel" required>
+                                                  <option selected disabled value="">Selecciona un nivel...</option>
+                                                  <option>Escolar</option>
+                                                  <option>Academia</option>
+                                                  <option>Universitario</option>
+                                              </select>
+                                          </div>
+                                      </div>
+                                      <div class="mb-3">
+                                          <label for="email" class="form-label">Correo Electrónico</label>
+                                          <input type="email" class="form-control" id="email" placeholder="email@ejemplo.com" required>
+                                          <div id="emailHelp" class="form-text">Nunca compartiremos tu correo.</div>
+                                      </div>
+                                      <div class="modal-footer px-0">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                          <button type="submit" class="btn btn-primary">Enviar</button>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+              
+          </div>
+      </nav>
+  </header>
 
   <section class="container my-5">
     <h2 class="text-center mb-4">Niveles Academicos</h2>

@@ -29,22 +29,28 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item"><a class="nav-link active text-light" href="/">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link text-light" href="Nosotros.html">Conócenos</a></li>
-            <li class="nav-item"><a class="nav-link text-light" href="niveles.html">Niveles</a></li>
+            <li class="nav-item"><a class="nav-link text-light" href="/Nosotros">Conócenos</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownCursos"
+                  role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Cursos
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownCursos">
+                  <li><a class="dropdown-item" href="cursos#curso1">Introducción a la
+                          Ciberseguridad</a></li>
+                  <li><a class="dropdown-item" href="cursos#curso2">Redes y Conectividad</a></li>
+                  <li><a class="dropdown-item" href="cursos#curso3">Seguridad en Redes Avanzada</a>
+                  </li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link text-light" href="/niveles">Niveles</a></li>
           </ul>
 
           <div th:if="${usuarioLogueado == null}">
             <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
           </div>
 
-          
-
-          <!-- SOLO EL ADMIN PODRA VER LA LISTA PARA ACEPTAR O NO -->
-          <div th:if="${usuarioLogueado != null and usuarioLogueado.rol == 'ADMIN'}">
-            <button class="btn btn-info ms-2" data-bs-toggle="modal" data-bs-target="#usuariosModal">
-              Panel de Usuarios
-            </button>
-          </div>
+        
 
           <div th:if="${usuarioLogueado != null}">
             <span class="text-white fw-bold ms-2" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
@@ -123,43 +129,66 @@
     </div>
   </div>
 
-  <!-- Modal Panel de Usuarios -->
-  <div class="modal fade" id="usuariosModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+  <!-- Modal Contactanos -->
+  <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Panel de Usuarios</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>ID Usuario</th>
-                <th>Email</th>
-                <th>Contraseña</th>
-                <th>Estado</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="u : ${usuarios}">
-                <td th:text="${u.idUsuario}">user1</td>
-                <td th:text="${u.email}">correo</td>
-                <td th:text="${u.password}">****</td>
-                <td>
-                  <span th:if="${u.activo}" class="badge bg-success">Activo</span>
-                  <span th:if="${!u.activo}" class="badge bg-warning">Pendiente</span>
-                </td>
-                <td>
-                  <form th:if="${!u.activo}" th:action="@{/aceptar}" method="post" class="d-inline">
-                    <input type="hidden" name="idUsuario" th:value="${u.idUsuario}">
-                    <button class="btn btn-sm btn-primary">Aceptar</button>
-                  </form>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <form>
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" required>
+              </div>
+              <div class="col-md-4">
+                <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
+                <input type="text" class="form-control" id="apellidoPaterno" required>
+              </div>
+              <div class="col-md-4">
+                <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
+                <input type="text" class="form-control" id="apellidoMaterno" required>
+              </div>
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="distrito" class="form-label">Distrito</label>
+                <input type="text" class="form-control" id="distrito" required>
+              </div>
+              <div class="col-md-6">
+                <label for="dni" class="form-label">DNI</label>
+                <input type="text" class="form-control" id="dni" required pattern="\d{8}"
+                  title="El DNI debe tener 8 dígitos.">
+              </div>
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="telefono" class="form-label">Teléfono/Celular</label>
+                <input type="tel" class="form-control" id="telefono" required>
+              </div>
+              <div class="col-md-6">
+                <label for="nivel" class="form-label">Nivel</label>
+                <select class="form-select" id="nivel" required>
+                  <option selected disabled value="">Selecciona un nivel...</option>
+                  <option>Escolar</option>
+                  <option>Academia</option>
+                  <option>Universitario</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo Electrónico</label>
+              <input type="email" class="form-control" id="email" placeholder="email@ejemplo.com" required>
+              <div id="emailHelp" class="form-text">Nunca compartiremos tu correo.</div>
+            </div>
+            <div class="modal-footer px-0">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -179,70 +208,6 @@
             data-bs-target="#contactModal">
             Contáctanos
           </button>
-        </div>
-      </div>
-
-      <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="row g-3 mb-3">
-                  <div class="col-md-4">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" required>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
-                    <input type="text" class="form-control" id="apellidoPaterno" required>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
-                    <input type="text" class="form-control" id="apellidoMaterno" required>
-                  </div>
-                </div>
-                <div class="row g-3 mb-3">
-                  <div class="col-md-6">
-                    <label for="distrito" class="form-label">Distrito</label>
-                    <input type="text" class="form-control" id="distrito" required>
-                  </div>
-                  <div class="col-md-6">
-                    <label for="dni" class="form-label">DNI</label>
-                    <input type="text" class="form-control" id="dni" required pattern="\d{8}"
-                      title="El DNI debe tener 8 dígitos.">
-                  </div>
-                </div>
-                <div class="row g-3 mb-3">
-                  <div class="col-md-6">
-                    <label for="telefono" class="form-label">Teléfono/Celular</label>
-                    <input type="tel" class="form-control" id="telefono" required>
-                  </div>
-                  <div class="col-md-6">
-                    <label for="nivel" class="form-label">Nivel</label>
-                    <select class="form-select" id="nivel" required>
-                      <option selected disabled value="">Selecciona un nivel...</option>
-                      <option>Escolar</option>
-                      <option>Academia</option>
-                      <option>Universitario</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Correo Electrónico</label>
-                  <input type="email" class="form-control" id="email" placeholder="email@ejemplo.com" required>
-                  <div id="emailHelp" class="form-text">Nunca compartiremos tu correo.</div>
-                </div>
-                <div class="modal-footer px-0">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                  <button type="submit" class="btn btn-primary">Enviar</button>
-                </div>
-              </form>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -274,7 +239,7 @@
 
           <!-- Botón encima de la imagen -->
           <div class="position-absolute top-50 start-50 translate-middle">
-            <a href="niveles.html" class="btn btn-dark btn-lg px-5 py-3 fs-4 shadow">
+            <a href="/niveles" class="btn btn-dark btn-lg px-5 py-3 fs-4 shadow">
               Ver los niveles
             </a>
           </div>
@@ -302,7 +267,7 @@
 
           <!-- Botón encima de la imagen -->
           <div class="position-absolute top-50 start-50 translate-middle">
-            <a href="cursos.html" class="btn btn-dark btn-lg px-5 py-3 fs-4 shadow">
+            <a href="/cursos" class="btn btn-dark btn-lg px-5 py-3 fs-4 shadow">
               Ver los cursos
             </a>
           </div>
@@ -332,7 +297,7 @@
 
           <!-- Botón encima de la imagen -->
           <div class="position-absolute top-50 start-50 translate-middle">
-            <a href="Nosotros.html" class="btn btn-dark btn-lg px-5 py-3 fs-4 shadow">
+            <a href="/Nosotros" class="btn btn-dark btn-lg px-5 py-3 fs-4 shadow">
               Más información
             </a>
           </div>
