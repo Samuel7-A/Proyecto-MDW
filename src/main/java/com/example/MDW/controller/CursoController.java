@@ -1,8 +1,11 @@
 package com.example.MDW.controller;
 
 import com.example.MDW.model.Curso;
-import com.example.MDW.model.Registro;
+import com.example.MDW.model.Inscripcion;
+import com.example.MDW.model.Usuario;
 import com.example.MDW.service.CursoService;
+import com.example.MDW.service.InscripcionService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +21,15 @@ import java.util.List;
 public class CursoController {
 
     private final CursoService cursoService;
+    private final InscripcionService inscripcionService;
 
     @Autowired
-    public CursoController(CursoService cursoService) {
+    public CursoController(CursoService cursoService, InscripcionService inscripcionService) {
         this.cursoService = cursoService;
+        this.inscripcionService = inscripcionService;
     }
 
+    // 🔹 Listar cursos
     @GetMapping
     public String listarCursos(Model model) {
         List<Curso> cursos = cursoService.listarCursos();
@@ -31,22 +37,34 @@ public class CursoController {
         return "cursos"; // template: src/main/resources/templates/cursos.html
     }
 
-    
-    /**
-     * Recibe el formulario desde el modal.
-     * Espera: courseId (hidden), userId, registrationDate (YYYY-MM-DD desde <input type="date">)
-     */
+    // 🔹 Registrar inscripción a un curso
     @PostMapping("/registrar")
     public String registrarCurso(
             @RequestParam("courseId") Long courseId,
-            @RequestParam("userId") String userId,
             @RequestParam("registrationDate") String registrationDate,
+            HttpSession session,
             RedirectAttributes redirectAttrs) {
+
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+
+        if (usuario == null) {
+            redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para inscribirte.");
+            return "redirect:/cursos";
+        }
 
         try {
             LocalDate fecha = LocalDate.parse(registrationDate);
-            Registro registro = cursoService.registrarCurso(courseId, userId, fecha);
-            redirectAttrs.addFlashAttribute("success", "Registro exitoso. Id: " + registro.getId());
+
+            Inscripcion inscripcion = new Inscripcion();
+            inscripcion.setCourseId(courseId);
+            inscripcion.setUserId(usuario.getIdUsuario());
+            inscripcion.setFecha(fecha);
+
+            inscripcionService.registrar(inscripcion);
+
+            redirectAttrs.addFlashAttribute("success",
+                    "Te has inscrito correctamente al curso con ID: " + courseId);
+
         } catch (DateTimeParseException ex) {
             redirectAttrs.addFlashAttribute("error", "Fecha inválida. Usa el formato correcto.");
         } catch (Exception ex) {

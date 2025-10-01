@@ -192,47 +192,47 @@
 
 <!-- Reseña Histórica -->
 <section class="container my-5 bg-light-gray p-4 rounded">
-    <div class="row align-items-center">
-      <div class="col-md-6">
-        <h2 class="section-title-red">Reseña Histórica</h2>
-        <p>
-          Nuestra academia nació con la visión de acercar la educación de calidad a estudiantes de todos 
-          los niveles. Iniciamos como un pequeño grupo de docentes apasionados por la enseñanza, desarrollando 
-          cursos virtuales para escolares de primaria y secundaria. Con el tiempo, expandimos nuestra oferta a programas 
-          preuniversitarios y universitarios, consolidándonos como una plataforma innovadora que combina tecnología y pedagogía 
-          moderna. Hoy, formamos una comunidad educativa que aprende sin fronteras y a su propio ritmo.
-        </p>
-      </div>
-      <div class="col-md-6">
-        <img src='../img/formacionMDW.jpg' class="img-fluid rounded shadow" alt="Historia del colegio">
-      </div>
-
-    </div>
-</section>
-
-<!-- Misión y Visión -->
-<section class="container my-5 text-center bg-light-gray p-4 rounded">
     <div class="row g-4">
-
-      <div class="col-md-6">
-        <div class="card shadow-sm p-4 h-100">
-          <h3 class="section-title-red">Misión</h3>
-          <p>
-            Brindar formación académica virtual de calidad, accesible y flexible para estudiantes 
-            de primaria, secundaria, academia y universidad, utilizando recursos tecnológicos modernos y 
-            estrategias didácticas innovadoras que potencien el aprendizaje autónomo.
-          </p>
+        <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header text-center text-danger fw-bold">
+          Reseña Histórica
+        </div>
+        <img th:src="@{${imgResena}}" class="card-img-top" alt="Reseña histórica">
+        <div class="card-body">
+          <p class="card-text" th:text="${resena}"></p>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="card shadow-sm p-4 h-100">
-          <h3 class="section-title-red">Visión</h3>
-          <p>
-            Ser reconocidos como la academia virtual líder en Latinoamérica, formando estudiantes competentes, 
-            críticos y creativos, capaces de desenvolverse con éxito en entornos académicos y profesionales, 
-            contribuyendo al desarrollo de la sociedad.
-          </p>
+    </div>
+    
 
+<!-- Misión y Visión -->
+
+    <!--<div class="row g-4"> -->
+     <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header text-center text-danger fw-bold">
+          Misión
+        </div>
+        <img th:src="@{${imgMision}}" class="card-img-top" alt="Misión">
+        <div class="card-body">
+          <p class="card-text" th:text="${mision}"></p>
+        </div>
+      </div>
+    </div>
+
+      <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header text-center text-danger fw-bold">
+          Visión
+        </div>
+        <img th:src="@{${imgVision}}" class="card-img-top" alt="Visión">
+        <div class="card-body">
+          <p class="card-text" th:text="${vision}"></p>
+        </div>
+      </div>
+    </div>
+</div>
 </section>
 
 <!-- Talleres -->
@@ -286,13 +286,13 @@
     <div id="galeria" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src='../img/conferencia.jpg' class="d-block w-100 rounded" alt="conferencia">
+                <img th:src="@{${imgCarrusel1}}" class="d-block w-100 rounded" alt="conferencia">
             </div>
             <div class="carousel-item">
-                <img src='../img/feria_digital.jpg' class="d-block w-100 rounded" alt="Feria Digital ">
+                <img th:src="@{${imgCarrusel2}}" class="d-block w-100 rounded" alt="Feria Digital ">
             </div>
             <div class="carousel-item">
-                <img src='../img/taller_practico.jpg' class="d-block w-100 rounded" alt="Taller Práctico">
+                <img th:src="@{${imgCarrusel3}}" class="d-block w-100 rounded" alt="Taller Práctico">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#galeria" data-bs-slide="prev">
