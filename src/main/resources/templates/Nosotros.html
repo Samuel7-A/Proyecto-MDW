@@ -130,51 +130,50 @@
                         </div>
                     </div>
 
+
                     <!-- Modal Contactanos -->
-                    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel"
-                        aria-hidden="true">
+                    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg modal-dialog-scrollable">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
+                                <form th:action="@{/contacto}" method="post">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
                                         <div class="row g-3 mb-3">
                                             <div class="col-md-4">
                                                 <label for="nombre" class="form-label">Nombre</label>
-                                                <input type="text" class="form-control" id="nombre" required>
+                                                <input type="text" class="form-control" id="nombre" name="nombre" required>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
-                                                <input type="text" class="form-control" id="apellidoPaterno" required>
+                                                <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno" required>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
-                                                <input type="text" class="form-control" id="apellidoMaterno" required>
+                                                <input type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno" required>
                                             </div>
                                         </div>
                                         <div class="row g-3 mb-3">
                                             <div class="col-md-6">
                                                 <label for="distrito" class="form-label">Distrito</label>
-                                                <input type="text" class="form-control" id="distrito" required>
+                                                <input type="text" class="form-control" id="distrito" name="distrito" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="dni" class="form-label">DNI</label>
-                                                <input type="text" class="form-control" id="dni" required
-                                                    pattern="\d{8}" title="El DNI debe tener 8 dígitos.">
+                                                <input type="text" class="form-control" id="dni" name="dni" required pattern="\d{8}"
+                                                    title="El DNI debe tener 8 dígitos.">
                                             </div>
                                         </div>
                                         <div class="row g-3 mb-3">
                                             <div class="col-md-6">
                                                 <label for="telefono" class="form-label">Teléfono/Celular</label>
-                                                <input type="tel" class="form-control" id="telefono" required>
+                                                <input type="tel" class="form-control" id="telefono" name="telefono" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="nivel" class="form-label">Nivel</label>
-                                                <select class="form-select" id="nivel" required>
+                                                <select class="form-select" id="nivel" name="nivel" required>
                                                     <option selected disabled value="">Selecciona un nivel...</option>
                                                     <option>Escolar</option>
                                                     <option>Academia</option>
@@ -184,216 +183,209 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Correo Electrónico</label>
-                                            <input type="email" class="form-control" id="email"
-                                                placeholder="email@ejemplo.com" required>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="email@ejemplo.com" required>
                                             <div id="emailHelp" class="form-text">Nunca compartiremos tu correo.</div>
                                         </div>
-                                        <div class="modal-footer px-0">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary">Enviar</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="modal-footer px-0">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary">Enviar</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
 
                 </div>
-
             </div>
         </nav>
     </header>
 
-
-    <!-- Reseña Histórica -->
-    <section class="container my-5 bg-light-gray p-4 rounded">
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header text-center text-danger fw-bold">
-                        Reseña Histórica
+    <main>
+            <!-- Reseña Histórica -->
+            <section class="container my-5 bg-light-gray p-4 rounded">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header text-center text-danger fw-bold">
+                                Reseña Histórica
+                            </div>
+                            <img th:src="@{${imgResena}}" class="card-img-top img-fluid" alt="Reseña histórica"
+                                style="height:250px; object-fit:cover;">
+                            <div class="card-body">
+                                <p>
+                                    <a class="btn btn-outline-primary w-100" data-bs-toggle="collapse" href="#resenaInfo"
+                                        role="button">
+                                        Ver más
+                                    </a>
+                                </p>
+                                <div class="collapse" id="resenaInfo">
+                                    <p class="card-text" th:text="${resena}"></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <img th:src="@{${imgResena}}" class="card-img-top img-fluid" alt="Reseña histórica"
-                        style="height:250px; object-fit:cover;">
-                    <div class="card-body">
-                        <p>
-                            <a class="btn btn-outline-primary w-100" data-bs-toggle="collapse" href="#resenaInfo"
-                                role="button">
-                                Ver más
-                            </a>
-                        </p>
-                        <div class="collapse" id="resenaInfo">
-                            <p class="card-text" th:text="${resena}"></p>
+
+                    <!-- Misión y Visión -->
+
+                    <!--<div class="row g-4"> -->
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header text-center text-danger fw-bold">
+                                Misión
+                            </div>
+                            <img th:src="@{${imgMision}}" class="card-img-top img-fluid" alt="Misión"
+                                style="height:250px; object-fit:cover;">
+                            <div class="card-body">
+                                <p>
+                                    <a class="btn btn-outline-primary w-100" data-bs-toggle="collapse" href="#misionInfo"
+                                        role="button">
+                                        Ver más
+                                    </a>
+                                </p>
+                                <div class="collapse" id="misionInfo">
+                                    <p class="card-text" th:text="${mision}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header text-center text-danger fw-bold">
+                                Visión
+                            </div>
+                            <img th:src="@{${imgVision}}" class="card-img-top img-fluid" alt="Visión"
+                                style="height:250px; object-fit:cover;">
+                            <div class="card-body">
+                                <p>
+                                    <a class="btn btn-outline-primary w-100" data-bs-toggle="collapse" href="#visionInfo"
+                                        role="button">
+                                        Ver más
+                                    </a>
+                                </p>
+                                <div class="collapse" id="visionInfo">
+                                    <p class="card-text" th:text="${vision}"></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- Misión y Visión -->
+            <!-- Talleres -->
 
-            <!--<div class="row g-4"> -->
-            <div class="col-md-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header text-center text-danger fw-bold">
-                        Misión
-                    </div>
-                    <img th:src="@{${imgMision}}" class="card-img-top img-fluid" alt="Misión"
-                        style="height:250px; object-fit:cover;">
-                    <div class="card-body">
-                        <p>
-                            <a class="btn btn-outline-primary w-100" data-bs-toggle="collapse" href="#misionInfo"
-                                role="button">
-                                Ver más
-                            </a>
-                        </p>
-                        <div class="collapse" id="misionInfo">
-                            <p class="card-text" th:text="${mision}"></p>
+            <!-- Multimedia -->
+            <section class="container my-5">
+                <h2 class="text-center mb-4 title-red fw-bold fs-2">Galería de Eventos</h2>
+
+                <!-- Carrusel -->
+                <div id="galeria" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+
+                        <!-- Item 1 -->
+                        <div class="carousel-item active position-relative"
+                            onmouseover="this.querySelector('.overlay-text').style.opacity='1'"
+                            onmouseout="this.querySelector('.overlay-text').style.opacity='0'">
+                            <img th:src="@{${imgCarrusel1}}" class="d-block w-100 rounded" alt="Conferencia"
+                                style="width:400px; height:250px; object-fit:cover;" onmouseover="this.style.opacity='0.4'"
+                                onmouseout="this.style.opacity='1'">
+                            <div class="overlay-text position-absolute top-50 start-50 translate-middle text-black fw-bold text-center p-3"
+                                style="opacity:0; transition:0.3s;">
+                                <p class="title-red fw-bold fs-2">Conferencias Virtuales:</p>
+                                <p th:text="${textoCarrusel1}"></p>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header text-center text-danger fw-bold">
-                        Visión
-                    </div>
-                    <img th:src="@{${imgVision}}" class="card-img-top img-fluid" alt="Visión"
-                        style="height:250px; object-fit:cover;">
-                    <div class="card-body">
-                        <p>
-                            <a class="btn btn-outline-primary w-100" data-bs-toggle="collapse" href="#visionInfo"
-                                role="button">
-                                Ver más
-                            </a>
-                        </p>
-                        <div class="collapse" id="visionInfo">
-                            <p class="card-text" th:text="${vision}"></p>
+
+                        <!-- Item 2 -->
+                        <div class="carousel-item position-relative"
+                            onmouseover="this.querySelector('.overlay-text').style.opacity='1'"
+                            onmouseout="this.querySelector('.overlay-text').style.opacity='0'">
+                            <img th:src="@{${imgCarrusel2}}" class="d-block w-100 rounded" alt="Feria Digital"
+                                style="width:400px; height:250px; object-fit:cover;" onmouseover="this.style.opacity='0.4'"
+                                onmouseout="this.style.opacity='1'">
+                            <div class="overlay-text position-absolute top-50 start-50 translate-middle text-black fw-bold text-center p-3"
+                                style="opacity:0; transition:0.3s;">
+                                <p class="title-red fw-bold fs-2">Feria Educativa Digital:</p>
+                                <p th:text="${textoCarrusel2}"></p>
+                            </div>
                         </div>
+
+                        <!-- Item 3 -->
+                        <div class="carousel-item position-relative"
+                            onmouseover="this.querySelector('.overlay-text').style.opacity='1'"
+                            onmouseout="this.querySelector('.overlay-text').style.opacity='0'">
+                            <img th:src="@{${imgCarrusel3}}" class="d-block w-100 rounded" alt="Taller Práctico"
+                                style="width:400px; height:250px; object-fit:cover;" onmouseover="this.style.opacity='0.3'"
+                                onmouseout="this.style.opacity='1'">
+                            <div class="overlay-text position-absolute top-50 start-50 translate-middle text-black fw-bold text-center p-3"
+                                style="opacity:0; transition:0.3s;">
+                                <p class="title-red fw-bold fs-2">Semana de Talleres Prácticos:</p>
+                                <p th:text="${textoCarrusel3}"></p>
+                            </div>
+                        </div>
+
                     </div>
+            </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-5 pb-4 mt-auto">
+        <div class="container text-center text-md-start">
+            <div class="row">
+
+                <!-- Sección: Nosotros -->
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+                    <h5 class="text-uppercase fw-bold mb-4">Nosotros</h5>
+                    <p><a href="/Nosotros" class="text-white text-decoration-none">Conócenos</a></p>
+                    <p>
+                        <a href="#" class="text-white text-decoration-none" data-bs-toggle="modal"
+                            data-bs-target="#contactModal">
+                            Contáctanos
+                        </a>
+                    </p>
+                </div>
+
+                <!-- Sección: Términos -->
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <h5 class="text-uppercase fw-bold mb-4">Términos</h5>
+                    <p><a href="../Términos y Condiciones de Uso.pdf" target="_blank"
+                            class="text-white text-decoration-none">Términos y condiciones</a></p>
+                </div>
+
+                <!-- Sección: Síguenos -->
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+                    <h5 class="text-uppercase fw-bold mb-4">Síguenos</h5>
+                    <a href="https://www.facebook.com/" target="_blank"
+                        class="btn btn-outline-light btn-floating m-1">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/" target="_blank"
+                        class="btn btn-outline-light btn-floating m-1">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.twitter.com/" target="_blank"
+                        class="btn btn-outline-light btn-floating m-1">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/" target="_blank"
+                        class="btn btn-outline-light btn-floating m-1">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+
+                <!-- Sección: QR -->
+                <div class="col-md-3 col-lg-2 col-xl-2 ms-auto mb-4 text-center">
+                    <h5 class="text-uppercase fw-bold mb-4">Escanéame</h5>
+                    <img src="../img/qrcode-generado.png" alt="QR" class="img-fluid rounded shadow"
+                        style="max-width:150px;">
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Talleres -->
-
-    <!-- Multimedia -->
-    <section class="container my-5">
-        <h2 class="text-center mb-4 title-red fw-bold fs-2">Galería de Eventos</h2>
-
-        <!-- Carrusel -->
-        <div id="galeria" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-
-                <!-- Item 1 -->
-                <div class="carousel-item active position-relative"
-                    onmouseover="this.querySelector('.overlay-text').style.opacity='1'"
-                    onmouseout="this.querySelector('.overlay-text').style.opacity='0'">
-                    <img th:src="@{${imgCarrusel1}}" class="d-block w-100 rounded" alt="Conferencia"
-                        style="width:400px; height:250px; object-fit:cover;" onmouseover="this.style.opacity='0.4'"
-                        onmouseout="this.style.opacity='1'">
-                    <div class="overlay-text position-absolute top-50 start-50 translate-middle text-black fw-bold text-center p-3"
-                        style="opacity:0; transition:0.3s;">
-                        <p class="title-red fw-bold fs-2">Conferencias Virtuales:</p>
-                        <p th:text="${textoCarrusel1}"></p>
-                    </div>
-                </div>
-
-                <!-- Item 2 -->
-                <div class="carousel-item position-relative"
-                    onmouseover="this.querySelector('.overlay-text').style.opacity='1'"
-                    onmouseout="this.querySelector('.overlay-text').style.opacity='0'">
-                    <img th:src="@{${imgCarrusel2}}" class="d-block w-100 rounded" alt="Feria Digital"
-                        style="width:400px; height:250px; object-fit:cover;" onmouseover="this.style.opacity='0.4'"
-                        onmouseout="this.style.opacity='1'">
-                    <div class="overlay-text position-absolute top-50 start-50 translate-middle text-black fw-bold text-center p-3"
-                        style="opacity:0; transition:0.3s;">
-                        <p class="title-red fw-bold fs-2">Feria Educativa Digital:</p>
-                        <p th:text="${textoCarrusel2}"></p>
-                    </div>
-                </div>
-
-                <!-- Item 3 -->
-                <div class="carousel-item position-relative"
-                    onmouseover="this.querySelector('.overlay-text').style.opacity='1'"
-                    onmouseout="this.querySelector('.overlay-text').style.opacity='0'">
-                    <img th:src="@{${imgCarrusel3}}" class="d-block w-100 rounded" alt="Taller Práctico"
-                        style="width:400px; height:250px; object-fit:cover;" onmouseover="this.style.opacity='0.3'"
-                        onmouseout="this.style.opacity='1'">
-                    <div class="overlay-text position-absolute top-50 start-50 translate-middle text-black fw-bold text-center p-3"
-                        style="opacity:0; transition:0.3s;">
-                        <p class="title-red fw-bold fs-2">Semana de Talleres Prácticos:</p>
-                        <p th:text="${textoCarrusel3}"></p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-        <!-- Footer -->
-        <footer class="bg-dark text-white pt-5 pb-4 mt-auto">
-            <div class="container text-center text-md-start">
-                <div class="row">
-
-                    <!-- Sección: Nosotros -->
-                    <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
-                        <h5 class="text-uppercase fw-bold mb-4">Nosotros</h5>
-                        <p><a href="Nosotros" class="text-white text-decoration-none">Conócenos</a></p>
-                        <p>
-                            <a href="#" class="text-white text-decoration-none" data-bs-toggle="modal"
-                                data-bs-target="#contactModal">
-                                Contáctanos
-                            </a>
-                        </p>
-                    </div>
-
-                    <!-- Sección: Términos -->
-                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <h5 class="text-uppercase fw-bold mb-4">Términos</h5>
-                        <p><a href="../Términos y Condiciones de Uso.pdf" target="_blank"
-                                class="text-white text-decoration-none">Términos y condiciones</a></p>
-                    </div>
-
-                    <!-- Sección: Síguenos -->
-                    <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
-                        <h5 class="text-uppercase fw-bold mb-4">Síguenos</h5>
-                        <a href="https://www.facebook.com/" target="_blank"
-                            class="btn btn-outline-light btn-floating m-1">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://www.instagram.com/" target="_blank"
-                            class="btn btn-outline-light btn-floating m-1">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.twitter.com/" target="_blank"
-                            class="btn btn-outline-light btn-floating m-1">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/" target="_blank"
-                            class="btn btn-outline-light btn-floating m-1">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                    </div>
-
-                    <!-- Sección: QR -->
-                    <div class="col-md-3 col-lg-2 col-xl-2 ms-auto mb-4 text-center">
-                        <h5 class="text-uppercase fw-bold mb-4">Escanéame</h5>
-                        <img src="../img/qrcode-generado.png" alt="QR" class="img-fluid rounded shadow"
-                            style="max-width:150px;">
-                    </div>
-                </div>
-
-                <!-- Derechos -->
-                <div class="text-center p-3 border-top border-secondary">
-                    © 2025 MDW academy
-                </div>
-            </div>
-        </footer>
 
             <!-- Derechos -->
             <div class="text-center p-3 border-top border-secondary">
                 © 2025 MDW academy
             </div>
+        </div>
     </footer>
 
     <!-- El navbar para el usuario logueado -->
