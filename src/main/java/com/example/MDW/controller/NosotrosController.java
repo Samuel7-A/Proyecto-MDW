@@ -37,16 +37,17 @@ public class NosotrosController {
                 model.addAttribute("imgResena", "/img/historia.jpg");
                 model.addAttribute("imgMision", "/img/mision.jpg");
                 model.addAttribute("imgVision", "/img/vision.jpg");
+
                 model.addAttribute("imgCarrusel1", "/img/conferencia.jpg");
                 model.addAttribute("imgCarrusel2", "/img/feria_digital.jpg");
                 model.addAttribute("imgCarrusel3", "/img/taller_practico.jpg");
 
                 model.addAttribute("textoCarrusel1",
-                                "Conferencias Virtuales: Charlas gratuitas dictadas por especialistas que abordan temas de actualidad académica y profesional.");
+                                "Charlas gratuitas dictadas por especialistas que abordan temas de actualidad académica y profesional.");
                 model.addAttribute("textoCarrusel2",
-                                "Feria Educativa Digital: Espacio virtual donde los estudiantes exploran cursos, talleres y programas de diferentes áreas del conocimiento.");
+                                "Espacio virtual donde los estudiantes exploran cursos, talleres y programas de diferentes áreas del conocimiento.");
                 model.addAttribute("textoCarrusel3",
-                                "Semana de Talleres Prácticos: Jornadas interactivas con actividades en línea para reforzar competencias en ciencia, tecnología y humanidades.");
+                                "Jornadas interactivas con actividades en línea para reforzar competencias en ciencia, tecnología y humanidades.");
 
                 return "Nosotros"; // se conecta con templates/Nosotros.html
         }

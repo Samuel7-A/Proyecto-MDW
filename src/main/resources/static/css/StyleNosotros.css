@@ -18,4 +18,25 @@
   color: #cc0000;
 }
 
+/* El overlay aparece
+.overlay-text {
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  transition: opacity 0.5s;
+}
+
+.carousel-item:hover .overlay-text {
+  opacity: 1;
+}
+
+La imagen se hace translúcida al pasar el mouse 
+.carousel-item img {
+  transition: opacity 0.5s;
+}
+
+.carousel-item:hover img {
+  opacity: 0.5;
+}
+*/
 
