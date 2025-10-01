@@ -37,7 +37,6 @@ public class CursoController {
         return "cursos"; // template: src/main/resources/templates/cursos.html
     }
 
-    // 🔹 Registrar inscripción a un curso
     @PostMapping("/registrar")
     public String registrarCurso(
             @RequestParam("courseId") Long courseId,
@@ -72,5 +71,16 @@ public class CursoController {
         }
 
         return "redirect:/cursos";
+    }
+
+    @GetMapping("/mis-cursos")
+    public String misCursos(Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario == null) {
+            return "redirect:/cursos";
+        }
+        List<Curso> cursos = inscripcionService.obtenerCursosPorUsuario(usuario.getIdUsuario());
+        model.addAttribute("cursos", cursos);
+        return "mis-cursos";
     }
 }

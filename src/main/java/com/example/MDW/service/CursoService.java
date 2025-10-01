@@ -40,7 +40,7 @@ public class CursoService {
 
     // 🔹 Buscar curso por ID
     public Curso findById(Long id) {
-        return cursos.stream()
+        return listarCursos().stream()
                 .filter(c -> c.getId().equals(id))
                 .findFirst()
                 .orElse(null);

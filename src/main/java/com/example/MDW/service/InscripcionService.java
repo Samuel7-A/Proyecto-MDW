@@ -1,6 +1,8 @@
 package com.example.MDW.service;
 
+import com.example.MDW.model.Curso;
 import com.example.MDW.model.Inscripcion;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,6 +16,9 @@ public class InscripcionService {
 
     private final List<Inscripcion> inscripciones = new ArrayList<>();
     private final AtomicLong inscripcionIdSeq = new AtomicLong(1);
+
+    @Autowired
+    private CursoService cursoService;
 
     // 🔹 Registrar inscripción
     public Inscripcion registrar(Inscripcion inscripcion) {
@@ -44,5 +49,12 @@ public class InscripcionService {
     // 🔹 Listar todas las inscripciones (admin, debug)
     public List<Inscripcion> listarTodas() {
         return new ArrayList<>(inscripciones);
+    }
+
+    public List<Curso> obtenerCursosPorUsuario(String userId) {
+        return obtenerPorUsuario(userId).stream()
+                .map(insc -> cursoService.findById(insc.getCourseId()))
+                .filter(curso -> curso != null)
+                .collect(Collectors.toList());
     }
 }

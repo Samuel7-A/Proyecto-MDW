@@ -73,7 +73,6 @@ public class HomeController {
         return "redirect:/";
     }
 
-    // 🔹 Nuevo método: registrar inscripción en un curso
     @PostMapping("/inscribirse")
     public String inscribirse(@RequestParam Long courseId,
                               @RequestParam String registrationDate,
@@ -99,7 +98,8 @@ public class HomeController {
         inscripcion.setFecha(fecha);
 
         inscripcionService.registrar(inscripcion);
-        System.out.println("Exito");
         return "redirect:/";
     }
+
+    
 }
