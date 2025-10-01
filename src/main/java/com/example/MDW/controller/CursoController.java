@@ -37,7 +37,6 @@ public class CursoController {
         return "cursos"; // template: src/main/resources/templates/cursos.html
     }
 
-    // 🔹 Registrar inscripción a un curso
     @PostMapping("/registrar")
     public String registrarCurso(
             @RequestParam("courseId") Long courseId,
