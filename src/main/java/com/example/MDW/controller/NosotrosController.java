@@ -33,14 +33,21 @@ public class NosotrosController {
                         + //
                         "contribuyendo al desarrollo de la sociedad.");
 
-        // Imágenes (rutas dentro de /static/img/nosotros/)
-        model.addAttribute("imgResena", "/img/historia.jpg");
-        model.addAttribute("imgMision", "/img/mision.jpg");
-        model.addAttribute("imgVision", "/img/vision.jpg");
+                // Imágenes (rutas dentro de /static/img/nosotros/)
+                model.addAttribute("imgResena", "/img/historia.jpg");
+                model.addAttribute("imgMision", "/img/mision.jpg");
+                model.addAttribute("imgVision", "/img/vision.jpg");
 
-        model.addAttribute("imgCarrusel1", "/img/conferencia.jpg");
-        model.addAttribute("imgCarrusel2", "/img/feria_digital.jpg");
-        model.addAttribute("imgCarrusel3", "/img/taller_practico.jpg");
+                model.addAttribute("imgCarrusel1", "/img/conferencia.jpg");
+                model.addAttribute("imgCarrusel2", "/img/feria_digital.jpg");
+                model.addAttribute("imgCarrusel3", "/img/taller_practico.jpg");
+
+                model.addAttribute("textoCarrusel1",
+                                "Charlas gratuitas dictadas por especialistas que abordan temas de actualidad académica y profesional.");
+                model.addAttribute("textoCarrusel2",
+                                "Espacio virtual donde los estudiantes exploran cursos, talleres y programas de diferentes áreas del conocimiento.");
+                model.addAttribute("textoCarrusel3",
+                                "Jornadas interactivas con actividades en línea para reforzar competencias en ciencia, tecnología y humanidades.");
 
         model.addAttribute("textoCarrusel1",
                 "Charlas gratuitas dictadas por especialistas que abordan temas de actualidad académica y profesional.");
