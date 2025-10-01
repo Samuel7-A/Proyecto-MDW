@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class NivelesController {
+public class Nivelescontroller {
 
     @GetMapping("/niveles")
     public String mostrarNiveles(Model model) {
