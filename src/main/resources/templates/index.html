@@ -51,13 +51,14 @@
                 </div>
 
 
-          <div th:if="${usuarioLogueado != null}">
-            <span class="text-white fw-bold ms-2" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
-             
-            </button>
-            <a href="/logout" class="btn btn-outline-danger ms-2">Cerrar sesión</a> 
-            <button class="btn btn-outline-light ms-2" data-bs-toggle="modal" data-bs-target="#sidebarModal"> <i class="bi bi-list fs-3"></i>
-          </div>
+              <div th:if="${usuarioLogueado != null}">
+                <span class="text-white fw-bold ms-2" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
+
+                <a href="/logout" class="btn btn-outline-danger ms-2">Cerrar sesión</a>
+                <button class="btn btn-outline-light ms-2" data-bs-toggle="modal" data-bs-target="#sidebarModal"> <i class="bi bi-list fs-3"></i>
+                </button>
+              </div>
+            </div>
         </div>
     </nav>
 </header>

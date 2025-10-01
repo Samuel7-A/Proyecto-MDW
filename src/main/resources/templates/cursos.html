@@ -54,9 +54,9 @@
                 <div th:if="${usuarioLogueado != null}">
                     <span class="text-white fw-bold ms-2" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
 
-                   <a href="/logout" class="btn btn-outline-danger ms-2">Cerrar sesión</a> 
-            <button class="btn btn-outline-light ms-2" data-bs-toggle="modal" data-bs-target="#sidebarModal"> <i class="bi bi-list fs-3"></i>
-          </div>
+                    <a href="/logout" class="btn btn-outline-danger ms-2">Cerrar sesión</a>
+                    <button class="btn btn-outline-light ms-2" data-bs-toggle="modal" data-bs-target="#sidebarModal"> <i class="bi bi-list fs-3"></i>
+                </div>
 
                 <!-- Modal Login -->
                 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -180,15 +180,78 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </nav>
+    <!-- El navbar para el usuario logueado -->
+    <div th:if="${usuarioLogueado != null}">
+        <div class="modal fade" id="sidebarModal" tabindex="-1" aria-labelledby="sidebarModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-end" style="margin-right:0; margin-left:auto; max-width:350px; min-height:100vh;">
+                <div class="modal-content border-0" style="max-width:350px;min-height:100vh;">
+                    <div class="modal-header border-0 d-flex flex-column align-items-start">
+                        <div class="d-flex align-items-center w-100 mb-2">
+                            <i class="bi bi-person-circle fs-1 me-2 text-secondary"></i>
+                            <span class="fw-bold fs-5" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
+                        </div>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body px-4">
+                        <div class="list-group list-group-flush mb-4">
+                            <a href="/dashboard" class="list-group-item list-group-item-action border-0">
+                                <i class="bi bi-house-door me-2"></i> Dashboard
+                            </a>
+                            <a href="mis-cursos" class="list-group-item list-group-item-action border-0">
+                                <i class="bi bi-journal me-2"></i> My Learning
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0">
+                                <i class="bi bi-newspaper me-2"></i> News
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0">
+                                <i class="bi bi-person me-2"></i> Update Profile
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0">
+                                <i class="bi bi-award me-2"></i> Badges & Certificates
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0">
+                                <i class="bi bi-clock-history me-2"></i> Learning History
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0">
+                                <i class="bi bi-translate me-2"></i> Language
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0">
+                                <i class="bi bi-question-circle me-2"></i> Support
+                            </a>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-3">Tus Cursos</h6>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex align-items-center border-0">
+                                    <i class="bi bi-book me-2 text-success"></i>
+                                    <span>Introducción a la Ciberseguridad</span>
+                                </li>
+                                <li class="list-group-item d-flex align-items-center border-0">
+                                    <i class="bi bi-book me-2 text-success"></i>
+                                    <span>Redes y Conectividad</span>
+                                </li>
+                                <li class="list-group-item d-flex align-items-center border-0">
+                                    <i class="bi bi-book me-2 text-success"></i>
+                                    <span>Seguridad en Redes Avanzada</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 px-4 pb-4">
+                        <a href="/logout" class="btn btn-outline-success w-100">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </header>
 
 
 <main class="container my-5">
+    <!-- Tabla de Resumen de Cursos -->
     <div class="row mb-5">
         <div class="col">
             <h2 class="text-center">Resumen de Cursos</h2>
@@ -203,29 +266,49 @@
                 <tbody>
                 <tr th:each="curso : ${cursos}">
                     <td th:text="${curso.nombre}"></td>
-                    <!-- Mostrar horas -->
                     <td th:text="${curso.horas + ' horas'}"></td>
-                    <td>Gratis</td>
+                    <td th:text="${curso.precio == 0 ? 'Gratis' : 'S/ ' + curso.precio}"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Cards dinámicas -->
+
+    <!-- Cards dinámicas de cursos -->
     <div class="row g-4">
         <div class="col-md-4" th:each="curso : ${cursos}" th:id="${'curso' + curso.id}">
             <div class="card shadow-sm rounded-4 h-100">
                 <img th:src="@{'/img/' + ${curso.imagen}}" class="card-img-top rounded-top-4" th:alt="${curso.nombre}">
                 <div class="card-body">
-                    <span class="badge bg-success mb-2">Nivel</span>
+
+                    <!-- Nivel dinámico con colores -->
+                    <span class="badge mb-2"
+                          th:text="${curso.nivel}"
+                          th:classappend="
+                          ${curso.nivel} == 'Básico' ? ' bg-success' :
+                          (${curso.nivel} == 'Intermedio' ? ' bg-warning text-dark' :
+                          (${curso.nivel} == 'Avanzado' ? ' bg-danger' : ''))">
+                    </span>
+
+
                     <h5 class="card-title fw-bold" th:text="${curso.nombre}"></h5>
                     <p class="card-text text-muted" th:text="${curso.descripcion}"></p>
+
                     <div class="d-flex justify-content-between text-muted small mb-3">
-                        <!-- Ahora muestra las horas dinámicamente -->
-                        <span><i class="bi bi-clock"></i> <span th:text="${curso.horas + ' horas'}"></span></span>
-                        <span><i class="bi bi-cash"></i> Gratis</span>
+                        <!-- Horas dinámicas -->
+                        <span>
+                        <i class="bi bi-clock"></i>
+                        <span th:text="${curso.horas + ' horas'}"></span>
+                    </span>
+
+                        <!-- Precio dinámico -->
+                        <span>
+                        <i class="bi bi-cash"></i>
+                        <span th:text="${curso.precio == 0 ? 'Gratis' : 'S/ ' + curso.precio}"></span>
+                    </span>
                     </div>
+
                     <button class="btn btn-primary w-100" data-bs-toggle="modal"
                             th:attr="data-bs-target=${'#modal-' + curso.id}">
                         Saber más
@@ -235,113 +318,71 @@
         </div>
     </div>
 
+
+    <!-- Modales de cursos (dinámicos con Thymeleaf) -->
+    <div th:each="curso : ${cursos}">
+        <!-- Modal Saber Más -->
+        <div class="modal fade" th:id="'modal-' + ${curso.id}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content rounded-4">
+                    <div class="modal-header">
+                        <h5 class="modal-title" th:text="${curso.nombre}"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p th:text="${curso.descripcion}"></p>
+                        <p><i class="bi bi-clock"></i> <span th:text="${curso.horas + ' horas'}"></span></p>
+                        <button class="btn btn-primary" data-bs-toggle="modal"
+                                th:attr="data-bs-target=${'#registerModal-' + curso.id}">
+                            Registrarse
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Registro -->
+        <div class="modal fade" th:id="'registerModal-' + ${curso.id}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content rounded-4">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Registro para <span th:text="${curso.nombre}"></span>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/inscribirse}" method="post">
+                            <!-- ID del curso -->
+                            <input type="hidden" name="courseId" th:value="${curso.id}" />
+
+                            <!-- id del usuario tomado de la sesión -->
+                            <div th:if="${session.usuarioLogueado != null}">
+                                <input type="hidden" name="userId" th:value="${session.usuarioLogueado.idUsuario}" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="registrationDate" class="form-label">Fecha de Registro</label>
+                                <input type="date" class="form-control" id="registrationDate" name="registrationDate">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Registrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
-
-<!-- Modales de cursos (dinámicos con Thymeleaf) -->
-<div th:each="curso : ${cursos}">
-    <!-- Modal Saber Más -->
-    <div class="modal fade" th:id="'modal-' + ${curso.id}" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content rounded-4">
-                <div class="modal-header">
-                    <h5 class="modal-title" th:text="${curso.nombre}"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p th:text="${curso.descripcion}"></p>
-                    <p><i class="bi bi-clock"></i> <span th:text="${curso.horas + ' horas'}"></span></p>
-                    <button class="btn btn-primary" data-bs-toggle="modal"
-                            th:attr="data-bs-target=${'#registerModal-' + curso.id}">
-                        Registrarse
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Registro -->
-    <div class="modal fade" th:id="'registerModal-' + ${curso.id}" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content rounded-4">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        Registro para <span th:text="${curso.nombre}"></span>
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form th:action="@{/register}" method="post">
-                        <!-- id del curso -->
-                        <input type="hidden" name="courseId" th:value="${curso.id}" />
-
-                        <div class="mb-3">
-                            <label for="userId" class="form-label">ID de Usuario</label>
-                            <input type="text" class="form-control" id="userId" name="userId" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="registrationDate" class="form-label">Fecha de Registro</label>
-                            <input type="date" class="form-control" id="registrationDate" name="registrationDate" required>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary">Registrar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="curso1Modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content rounded-4">
-            <div class="modal-header">
-                <h5 class="modal-title">Introducción a la Ciberseguridad</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>Aquí puedes detallar todo el contenido del curso, objetivos, temario, etc.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="curso2Modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content rounded-4">
-            <div class="modal-header">
-                <h5 class="modal-title">Redes y Conectividad</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>Aquí puedes detallar el temario del curso de redes.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="curso3Modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content rounded-4">
-            <div class="modal-header">
-                <h5 class="modal-title">Seguridad en Redes Avanzada</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>Aquí puedes detallar el contenido del curso avanzado.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Footer -->
+<!-- FOOTER -->
 <footer class="bg-dark text-white pt-5 pb-4 mt-auto">
     <div class="container text-center text-md-start">
         <div class="row">
 
-            <!-- Sección: Nosotros -->
+            <!-- Nosotros -->
             <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
                 <h5 class="text-uppercase fw-bold mb-4">Nosotros</h5>
                 <p><a href="Nosotros" class="text-white text-decoration-none">Conócenos</a></p>
@@ -352,16 +393,15 @@
                     </a>
                 </p>
             </div>
-            
 
-            <!-- Sección: Términos -->
+            <!-- Términos -->
             <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                 <h5 class="text-uppercase fw-bold mb-4">Términos</h5>
                 <p><a href="../Términos y Condiciones de Uso.pdf" target="_blank"
                       class="text-white text-decoration-none">Términos y condiciones</a></p>
             </div>
 
-            <!-- Sección: Síguenos -->
+            <!-- Síguenos -->
             <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
                 <h5 class="text-uppercase fw-bold mb-4">Síguenos</h5>
                 <a href="https://www.facebook.com/" target="_blank" class="btn btn-outline-light btn-floating m-1">
@@ -378,11 +418,10 @@
                 </a>
             </div>
 
-            <!-- Sección: QR -->
+            <!-- QR -->
             <div class="col-md-3 col-lg-2 col-xl-2 ms-auto mb-4 text-center">
                 <h5 class="text-uppercase fw-bold mb-4">Escanéame</h5>
-                <img src="../img/qrcode-generado.png" alt="QR" class="img-fluid rounded shadow"
-                     style="max-width:150px;">
+                <img src="../img/qrcode-generado.png" alt="QR" class="img-fluid rounded shadow" style="max-width:150px;">
             </div>
         </div>
 
@@ -390,72 +429,8 @@
         <div class="text-center p-3 border-top border-secondary">
             © 2025 MDW academy
         </div>
-</footer>
-  <!-- El navbar para el usuario logueado -->
-  <div th:if="${usuarioLogueado != null}">
-    <div class="modal fade" id="sidebarModal" tabindex="-1" aria-labelledby="sidebarModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-end" style="margin-right:0; margin-left:auto; max-width:350px; min-height:100vh;">
-        <div class="modal-content border-0" style="max-width:350px;min-height:100vh;">
-          <div class="modal-header border-0 d-flex flex-column align-items-start">
-            <div class="d-flex align-items-center w-100 mb-2">
-             <i class="bi bi-person-circle fs-1 me-2 text-secondary"></i>
-              <span class="fw-bold fs-5" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
-            </div>
-            <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body px-4">
-            <div class="list-group list-group-flush mb-4">
-              <a href="/dashboard" class="list-group-item list-group-item-action border-0">
-                <i class="bi bi-house-door me-2"></i> Dashboard
-              </a>
-              <a href="#" class="list-group-item list-group-item-action border-0">
-                <i class="bi bi-journal me-2"></i> My Learning
-              </a>
-              <a href="#" class="list-group-item list-group-item-action border-0">
-                <i class="bi bi-newspaper me-2"></i> News
-              </a>
-              <a href="#" class="list-group-item list-group-item-action border-0">
-                <i class="bi bi-person me-2"></i> Update Profile
-              </a>
-              <a href="#" class="list-group-item list-group-item-action border-0">
-                <i class="bi bi-award me-2"></i> Badges & Certificates
-              </a>
-              <a href="#" class="list-group-item list-group-item-action border-0">
-                <i class="bi bi-clock-history me-2"></i> Learning History
-              </a>
-              <a href="#" class="list-group-item list-group-item-action border-0">
-                <i class="bi bi-translate me-2"></i> Language
-              </a>
-              <a href="#" class="list-group-item list-group-item-action border-0">
-                <i class="bi bi-question-circle me-2"></i> Support
-              </a>
-            </div>
-            <div>
-              <h6 class="fw-bold mb-3">Tus Cursos</h6>
-              <ul class="list-group">
-                <li class="list-group-item d-flex align-items-center border-0">
-                  <i class="bi bi-book me-2 text-success"></i>
-                  <span>Introducción a la Ciberseguridad</span>
-                </li>
-                <li class="list-group-item d-flex align-items-center border-0">
-                  <i class="bi bi-book me-2 text-success"></i>
-                  <span>Redes y Conectividad</span>
-                </li>
-                <li class="list-group-item d-flex align-items-center border-0">
-                  <i class="bi bi-book me-2 text-success"></i>
-                  <span>Seguridad en Redes Avanzada</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="modal-footer border-0 px-4 pb-4">
-            <a href="/logout" class="btn btn-outline-success w-100">Logout</a>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
