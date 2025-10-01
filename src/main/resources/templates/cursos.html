@@ -345,54 +345,33 @@
                         </div>
                         <div class="modal-body">
                             <p th:text="${curso.descripcion}"></p>
-                            <p><i class="bi bi-clock"></i> <span th:text="${curso.horas + ' horas'}"></span></p>
-                            <button class="btn btn-primary" data-bs-toggle="modal"
-                                th:attr="data-bs-target=${'#registerModal-' + curso.id}">
-                                Registrarse
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <p>
+                                <i class="bi bi-clock"></i>
+                                <span th:text="${curso.horas + ' horas'}"></span>
+                            </p>
 
-            <!-- Modal Registro -->
-            <div class="modal fade" th:id="'registerModal-' + ${curso.id}" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content rounded-4">
-                        <div class="modal-header">
-                            <h5 class="modal-title">
-                                Registro para <span th:text="${curso.nombre}"></span>
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
+                            <!-- Formulario directo para inscribirse -->
                             <form th:action="@{/inscribirse}" method="post">
                                 <!-- ID del curso -->
                                 <input type="hidden" name="courseId" th:value="${curso.id}" />
 
-                                <!-- id del usuario tomado de la sesión -->
+                                <!-- ID del usuario logueado -->
                                 <div th:if="${session.usuarioLogueado != null}">
-                                    <input type="hidden" name="userId"
-                                        th:value="${session.usuarioLogueado.idUsuario}" />
+                                    <input type="hidden" name="userId" th:value="${session.usuarioLogueado.idUsuario}" />
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="registrationDate" class="form-label">Fecha de Registro</label>
-                                    <input type="date" class="form-control" id="registrationDate"
-                                        name="registrationDate">
-                                </div>
+                                <!-- Fecha automática -->
+                                <input type="hidden" name="registrationDate"
+                                       th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" />
 
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-primary">Registrar</button>
-                                </div>
+                                <button type="submit" class="btn btn-primary">Registrarse</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </main>
     <!-- FOOTER -->
     <footer class="bg-dark text-white pt-5 pb-4 mt-auto">

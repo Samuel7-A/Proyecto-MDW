@@ -81,25 +81,49 @@ public class HomeController {
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
         if (usuario == null) {
             redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para inscribirte en un curso.");
-            return "redirect:/";
+            return "redirect:/cursos";
         }
 
         Curso curso = cursoService.findById(courseId);
         if (curso == null) {
             redirectAttrs.addFlashAttribute("error", "El curso no existe.");
-            return "redirect:/";
+            return "redirect:/cursos";
+        }
+
+        //  Validación de inscripción duplicada
+        if (inscripcionService.existeInscripcion(usuario.getIdUsuario(), courseId)) {
+            redirectAttrs.addFlashAttribute("error", "Ya estás inscrito en este curso.");
+            return "redirect:/cursos";
         }
 
         LocalDate fecha = LocalDate.parse(registrationDate);
 
-        Inscripcion inscripcion = new Inscripcion();
-        inscripcion.setUserId(usuario.getIdUsuario());
-        inscripcion.setCourseId(curso.getId());
-        inscripcion.setFecha(fecha);
+        inscripcionService.registrar(courseId, usuario.getIdUsuario(), fecha);
 
-        inscripcionService.registrar(inscripcion);
-        return "redirect:/";
+        redirectAttrs.addFlashAttribute("success", "Inscripción realizada con éxito.");
+        return "redirect:/cursos";
     }
 
-    
+    @PostMapping("/desinscribirse")
+    public String desinscribirse(@RequestParam Long courseId,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttrs) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario == null) {
+            redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para gestionar tus cursos.");
+            return "redirect:/cursos";
+        }
+
+        boolean eliminado = inscripcionService.eliminarInscripcion(usuario.getIdUsuario(), courseId);
+
+        if (eliminado) {
+            redirectAttrs.addFlashAttribute("success", "Te has desinscrito del curso correctamente.");
+        } else {
+            redirectAttrs.addFlashAttribute("error", "No estabas inscrito en este curso.");
+        }
+
+        return "redirect:/cursos/mis-cursos";
+    }
+
+
 }

@@ -8,6 +8,7 @@ public class Inscripcion {
     private String userId;   // id del usuario
     private LocalDate fecha; // fecha de inscripción
 
+
     public Inscripcion() {}
 
     public Inscripcion(Long courseId, String userId, LocalDate fecha) {

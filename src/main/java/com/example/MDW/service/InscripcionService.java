@@ -22,6 +22,11 @@ public class InscripcionService {
 
     // 🔹 Registrar inscripción
     public Inscripcion registrar(Inscripcion inscripcion) {
+        // ✅ Validar antes de registrar
+        if (existeInscripcion(inscripcion.getUserId(), inscripcion.getCourseId())) {
+            throw new IllegalArgumentException("El usuario ya está inscrito en este curso.");
+        }
+
         inscripcion.setId(inscripcionIdSeq.getAndIncrement());
         if (inscripcion.getFecha() == null) {
             inscripcion.setFecha(LocalDate.now()); // si no mandan fecha, se pone la actual
@@ -51,10 +56,23 @@ public class InscripcionService {
         return new ArrayList<>(inscripciones);
     }
 
+    // 🔹 Cursos en los que está inscrito un usuario
     public List<Curso> obtenerCursosPorUsuario(String userId) {
         return obtenerPorUsuario(userId).stream()
                 .map(insc -> cursoService.findById(insc.getCourseId()))
                 .filter(curso -> curso != null)
                 .collect(Collectors.toList());
     }
+
+    // ✅ Validar si el usuario ya está inscrito en un curso
+    public boolean existeInscripcion(String userId, Long courseId) {
+        return inscripciones.stream()
+                .anyMatch(i -> i.getUserId().equals(userId) && i.getCourseId().equals(courseId));
+    }
+    // 🔹 Eliminar inscripción de un curso
+    public boolean eliminarInscripcion(String userId, Long courseId) {
+        return inscripciones.removeIf(i -> i.getUserId().equals(userId) && i.getCourseId().equals(courseId));
+    }
+
 }
+
