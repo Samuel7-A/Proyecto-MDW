@@ -45,15 +45,15 @@
                         <li class="nav-item"><a class="nav-link text-light" href="/niveles">Niveles</a></li>
                     </ul>
 
-                    <div th:if="${usuarioLogueado == null}">
+                    <div th:if="${personaLogueado == null}">
                         <button class="btn btn-outline-light" data-bs-toggle="modal"
                             data-bs-target="#loginModal">Login</button>
                     </div>
 
 
 
-                    <div th:if="${usuarioLogueado != null}">
-                        <span class="text-white fw-bold ms-2" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
+                    <div th:if="${personaLogueado != null}">
+                        <span class="text-white fw-bold ms-2" th:text="${personaLogueado.idPersona}">persona</span>
 
                         <a href="/logout" class="btn btn-outline-danger ms-2">Cerrar sesión</a>
                         <button class="btn btn-outline-light ms-2" data-bs-toggle="modal"
@@ -71,8 +71,8 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="mb-3">
-                                        <label for="loginId" class="form-label">ID de Usuario</label>
-                                        <input type="text" class="form-control" id="loginId" name="idUsuario"
+                                        <label for="loginEmail" class="form-label">Email</label>
+                                        <input type="text" class="form-control" id="loginEmail" name="email"
                                             autocomplete="off" required>
                                     </div>
                                     <div class="mb-3">
@@ -101,9 +101,14 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="registerId" class="form-label">ID de Usuario</label>
-                                        <input type="text" class="form-control" id="registerId" name="idUsuario"
+                                     <div class="mb-3">
+                                        <label for="registerNombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="registerNombre" name="nombre"
+                                            autocomplete="off" required>
+                                    </div>
+                                     <div class="mb-3">
+                                        <label for="registerApellido" class="form-label">Apellido</label>
+                                        <input type="text" class="form-control" id="registerApellido" name="apellido"
                                             autocomplete="off" required>
                                     </div>
                                     <div class="mb-3">
@@ -194,8 +199,8 @@
 
                 </div>
             </div>
-            <!-- El navbar para el usuario logueado -->
-            <div th:if="${usuarioLogueado != null}">
+            <!-- El navbar para el persona logueado -->
+            <div th:if="${personaLogueado != null}">
                 <div class="modal fade" id="sidebarModal" tabindex="-1" aria-labelledby="sidebarModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-end"
@@ -204,7 +209,7 @@
                             <div class="modal-header border-0 d-flex flex-column align-items-start">
                                 <div class="d-flex align-items-center w-100 mb-2">
                                     <i class="bi bi-person-circle fs-1 me-2 text-secondary"></i>
-                                    <span class="fw-bold fs-5" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
+                                    <span class="fw-bold fs-5" th:text="${personaLogueado.idPersona}">persona</span>
                                 </div>
                                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
                             </div>
@@ -353,9 +358,9 @@
                                 <!-- ID del curso -->
                                 <input type="hidden" name="courseId" th:value="${curso.id}" />
 
-                                <!-- ID del usuario logueado -->
-                                <div th:if="${session.usuarioLogueado != null}">
-                                    <input type="hidden" name="userId" th:value="${session.usuarioLogueado.idUsuario}" />
+                                <!-- ID del persona logueado -->
+                                <div th:if="${session.personaLogueado != null}">
+                                    <input type="hidden" name="userId" th:value="${session.personaLogueado.idPersona}" />
                                 </div>
 
                                 <!-- Fecha automática -->

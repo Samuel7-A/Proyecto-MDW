@@ -2,7 +2,7 @@ package com.example.MDW.controller;
 
 import com.example.MDW.model.Curso;
 import com.example.MDW.model.Inscripcion;
-import com.example.MDW.model.Usuario;
+import com.example.MDW.model.Persona;
 import com.example.MDW.service.CursoService;
 import com.example.MDW.service.InscripcionService;
 import jakarta.servlet.http.HttpSession;
@@ -30,12 +30,26 @@ public class CursoController {
     }
 
     // 🔹 Listar cursos
-    @GetMapping
-    public String listarCursos(Model model) {
-        List<Curso> cursos = cursoService.listarCursos();
-        model.addAttribute("cursos", cursos);
-        return "cursos"; // template: src/main/resources/templates/cursos.html
+  @GetMapping
+public String listarCursos(Model model, HttpSession session) {
+    List<Curso> cursos = cursoService.listarCursos();
+    model.addAttribute("cursos", cursos);
+
+    // 🔹 Obtener persona logueada desde sesión
+    Persona persona = (Persona) session.getAttribute("personaLogueado");
+    model.addAttribute("personaLogueado", persona);
+
+    // 🔹 Mostrar cursos inscritos en el sidebar si hay sesión activa
+    if (persona != null) {
+        List<Curso> cursosInscritos = inscripcionService.obtenerCursosPorPersona(persona.getIdPersona());
+        model.addAttribute("cursosInscritosSidebar", cursosInscritos);
+    } else {
+        model.addAttribute("cursosInscritosSidebar", List.of());
     }
+
+    return "cursos"; // template: src/main/resources/templates/cursos.html
+}
+
 
     @PostMapping("/registrar")
     public String registrarCurso(
@@ -44,9 +58,9 @@ public class CursoController {
             HttpSession session,
             RedirectAttributes redirectAttrs) {
 
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
 
-        if (usuario == null) {
+        if (persona == null) {
             redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para inscribirte.");
             return "redirect:/cursos";
         }
@@ -56,7 +70,7 @@ public class CursoController {
 
             Inscripcion inscripcion = new Inscripcion();
             inscripcion.setCourseId(courseId);
-            inscripcion.setUserId(usuario.getIdUsuario());
+            inscripcion.setUserId(persona.getIdPersona());
             inscripcion.setFecha(fecha);
 
             inscripcionService.registrar(inscripcion);
@@ -75,11 +89,11 @@ public class CursoController {
 
     @GetMapping("/mis-cursos")
     public String misCursos(Model model, HttpSession session) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) {
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        if (persona == null) {
             return "redirect:/cursos";
         }
-        List<Curso> cursos = inscripcionService.obtenerCursosPorUsuario(usuario.getIdUsuario());
+        List<Curso> cursos = inscripcionService.obtenerCursosPorPersona(persona.getIdPersona());
         model.addAttribute("cursos", cursos);
         return "mis-cursos";
     }

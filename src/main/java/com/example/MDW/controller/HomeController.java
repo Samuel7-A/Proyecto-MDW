@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.MDW.model.Usuario;
+import com.example.MDW.model.Persona;
 import com.example.MDW.model.Curso;
 import com.example.MDW.model.Inscripcion;
-import com.example.MDW.service.UsuarioService;
+import com.example.MDW.service.PersonaService;
 import com.example.MDW.service.CursoService;
 import com.example.MDW.service.InscripcionService;
 
@@ -21,12 +21,12 @@ import org.springframework.ui.Model;
 @Controller
 public class HomeController {
 
-    private final UsuarioService usuarioService;
+    private final PersonaService personaService;
     private final CursoService cursoService;
     private final InscripcionService inscripcionService;
 
-    public HomeController(UsuarioService usuarioService, CursoService cursoService, InscripcionService inscripcionService) {
-        this.usuarioService = usuarioService;
+    public HomeController(PersonaService personaService, CursoService cursoService, InscripcionService inscripcionService) {
+        this.personaService = personaService;
         this.cursoService = cursoService;
         this.inscripcionService = inscripcionService;
     }
@@ -42,29 +42,34 @@ public class HomeController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String idUsuario,
+    public String login(@RequestParam String email,
                         @RequestParam String password,
                         Model model,
                         HttpSession session) {
-        Usuario usuario = usuarioService.login(idUsuario, password);
-        if (usuario != null) {
-            session.setAttribute("usuarioLogueado", usuario);
+        Persona persona = personaService.login(email, password);
+        if (persona != null) {
+            session.setAttribute("personaLogueado", persona);
+            System.out.println("Persona logueada correctamente:");
+     
             return "redirect:/"; // refresca la página
         }
-        model.addAttribute("error", "Credenciales incorrectas o usuario no registrado");
+        model.addAttribute("error", "Credenciales incorrectas o persona no registrada");
         return "index";
     }
 
-    @PostMapping("/register")
-    public String register(@RequestParam String idUsuario,
-                           @RequestParam String email,
-                           @RequestParam String password,
-                           Model model) {
-        Usuario nuevo = new Usuario(idUsuario, email, password);
-        usuarioService.registrar(nuevo);
-        model.addAttribute("mensaje", "Usuario registrado. Ahora puedes iniciar sesión.");
-        return "index";
-    }
+   @PostMapping("/register")
+public String register(@RequestParam String nombre,
+                       @RequestParam String apellido,
+                       @RequestParam String email,
+                       @RequestParam String password,
+                       
+                       Model model) {
+
+    Persona nuevo = new Persona(nombre, apellido, email, password);
+    personaService.registrar(nuevo);
+    model.addAttribute("mensaje", "Persona registrada. Ahora puedes iniciar sesión.");
+    return "index";
+}
 
     @GetMapping("/logout")
     public String logout(HttpSession session, RedirectAttributes redirectAttrs) {
@@ -78,8 +83,8 @@ public class HomeController {
                               @RequestParam String registrationDate,
                               HttpSession session,
                               RedirectAttributes redirectAttrs) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) {
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        if (persona == null) {
             redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para inscribirte en un curso.");
             return "redirect:/cursos";
         }
@@ -91,14 +96,14 @@ public class HomeController {
         }
 
         //  Validación de inscripción duplicada
-        if (inscripcionService.existeInscripcion(usuario.getIdUsuario(), courseId)) {
+        if (inscripcionService.existeInscripcion(persona.getIdPersona(), courseId)) {
             redirectAttrs.addFlashAttribute("error", "Ya estás inscrito en este curso.");
             return "redirect:/cursos";
         }
 
         LocalDate fecha = LocalDate.parse(registrationDate);
 
-        inscripcionService.registrar(courseId, usuario.getIdUsuario(), fecha);
+        inscripcionService.registrar(courseId, persona.getIdPersona(), fecha);
 
         redirectAttrs.addFlashAttribute("success", "Inscripción realizada con éxito.");
         return "redirect:/cursos";
@@ -108,13 +113,13 @@ public class HomeController {
     public String desinscribirse(@RequestParam Long courseId,
                                  HttpSession session,
                                  RedirectAttributes redirectAttrs) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) {
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        if (persona == null) {
             redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para gestionar tus cursos.");
             return "redirect:/cursos";
         }
 
-        boolean eliminado = inscripcionService.eliminarInscripcion(usuario.getIdUsuario(), courseId);
+        boolean eliminado = inscripcionService.eliminarInscripcion(persona.getIdPersona(), courseId);
 
         if (eliminado) {
             redirectAttrs.addFlashAttribute("success", "Te has desinscrito del curso correctamente.");
