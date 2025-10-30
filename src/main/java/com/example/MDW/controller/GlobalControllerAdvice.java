@@ -4,7 +4,7 @@ package com.example.MDW.controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import com.example.MDW.model.Curso;
-import com.example.MDW.model.Usuario;
+import com.example.MDW.model.Persona;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import com.example.MDW.service.InscripcionService;
@@ -19,9 +19,9 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute
     public void addUserToModel(HttpSession session, Model model) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if(usuario != null) {
-            model.addAttribute("usuarioLogueado", usuario);
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        if(persona != null) {
+            model.addAttribute("personaLogueado", persona);
         }
         
     }
@@ -31,9 +31,9 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute("cursosInscritosSidebar")
     public List<Curso> cursosInscritosSidebar(HttpSession session) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario != null) {
-            return inscripcionService.obtenerCursosPorUsuario(usuario.getIdUsuario());
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        if (persona != null) {
+            return inscripcionService.obtenerCursosPorPersona(persona.getIdPersona());
         }
         return Collections.emptyList();
     }
