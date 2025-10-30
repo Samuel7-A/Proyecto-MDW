@@ -280,6 +280,7 @@
                             <td th:text="${curso.nombre}"></td>
                             <td th:text="${curso.horas + ' horas'}"></td>
                             <td th:text="${curso.precio == 0 ? 'Gratis' : 'S/ ' + curso.precio}"></td>
+                            <!-- condición ? valorSiVerdadero : valorSiFalso -->
                         </tr>
                     </tbody>
                 </table>
@@ -368,8 +369,9 @@
                 </div>
             </div>
         </div>
-
+        
     </main>
+
     <!-- FOOTER -->
     <footer class="bg-dark text-white pt-5 pb-4 mt-auto">
         <div class="container text-center text-md-start">
