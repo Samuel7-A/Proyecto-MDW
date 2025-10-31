@@ -1,13 +1,25 @@
 package com.example.MDW.model;
 
+import jakarta.persistence.Entity;
+
+import jakarta.persistence.*;
+
+@Entity
 public class Curso {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private String nombre;
     private String descripcion;
     private String imagen;
-    private int horas;
+    private int horas; //Cambiar a duracion
     private double precio;   // nuevo campo
     private String nivel;    // nuevo campo (ej: Básico, Intermedio, Avanzado)
+
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Inscripcion> inscripciones = new ArrayList<>();
 
     public Curso() {
     }
