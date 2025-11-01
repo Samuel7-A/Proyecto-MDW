@@ -15,12 +15,11 @@
 </head>
 
 <body class="bg-light bg-opacity-10 d-flex flex-column min-vh-100">
-
     <header class="bg-dark shadow-sm">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand text-light fw-bold" href="/">MDW</a>
 
+                <a class="navbar-brand text-light fw-bold" href="index">MDW</a>
                 <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -47,25 +46,162 @@
                         <li class="nav-item"><a class="nav-link text-light" href="/niveles">Niveles</a></li>
                     </ul>
 
-                    <div th:if="${usuarioLogueado == null}">
+                    <div th:if="${personaLogueado == null}">
                         <button class="btn btn-outline-light" data-bs-toggle="modal"
                             data-bs-target="#loginModal">Login</button>
                     </div>
 
 
-                    <div th:if="${usuarioLogueado != null}">
-                        <span class="text-white fw-bold ms-2" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
+
+                    <div th:if="${personaLogueado != null}">
+                        <span class="text-white fw-bold ms-2" th:text="${personaLogueado.nombre}">persona</span>
 
                         <a href="/logout" class="btn btn-outline-danger ms-2">Cerrar sesión</a>
                         <button class="btn btn-outline-light ms-2" data-bs-toggle="modal"
                             data-bs-target="#sidebarModal"> <i class="bi bi-list fs-3"></i>
-                        </button>
                     </div>
+
+                    <!-- Modal Login -->
+                    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form class="modal-content" th:action="@{/login}" method="post">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Inicio de Sesión</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="loginEmail" class="form-label">Email</label>
+                                        <input type="text" class="form-control" id="loginEmail" name="email"
+                                            autocomplete="off" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="loginPassword" class="form-label">Contraseña</label>
+                                        <input type="password" class="form-control" id="loginPassword" name="password"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal"
+                                        data-bs-dismiss="modal" class="text-muted"><small>¿No tienes cuenta? Regístrate
+                                            aquí</small></a>
+                                    <button type="submit" class="btn btn-primary">Login</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Modal Registro -->
+                    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form class="modal-content" th:action="@{/register}" method="post" autocomplete="off">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Crear una Cuenta</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                     <div class="mb-3">
+                                        <label for="registerNombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="registerNombre" name="nombre"
+                                            autocomplete="off" required>
+                                    </div>
+                                     <div class="mb-3">
+                                        <label for="registerApellido" class="form-label">Apellido</label>
+                                        <input type="text" class="form-control" id="registerApellido" name="apellido"
+                                            autocomplete="off" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="registerEmail" class="form-label">Correo Electrónico</label>
+                                        <input type="email" class="form-control" id="registerEmail" name="email"
+                                            autocomplete="off" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="registerPassword" class="form-label">Contraseña</label>
+                                        <input type="password" class="form-control" id="registerPassword"
+                                            name="password" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal"
+                                        data-bs-dismiss="modal" class="text-muted"><small>¿Ya tienes cuenta? Inicia
+                                            sesión</small></a>
+                                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Modal Contactanos -->
+                    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <form th:action="@{/contacto}" method="post">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-4">
+                                                <label for="nombre" class="form-label">Nombre</label>
+                                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
+                                                <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
+                                                <input type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno" required>
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label for="distrito" class="form-label">Distrito</label>
+                                                <input type="text" class="form-control" id="distrito" name="distrito" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="dni" class="form-label">DNI</label>
+                                                <input type="text" class="form-control" id="dni" name="dni" required pattern="\d{8}"
+                                                    title="El DNI debe tener 8 dígitos.">
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label for="telefono" class="form-label">Teléfono/Celular</label>
+                                                <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="nivel" class="form-label">Nivel</label>
+                                                <select class="form-select" id="nivel" name="nivel" required>
+                                                    <option selected disabled value="">Selecciona un nivel...</option>
+                                                    <option>Escolar</option>
+                                                    <option>Academia</option>
+                                                    <option>Universitario</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Correo Electrónico</label>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="email@ejemplo.com" required>
+                                            <div id="emailHelp" class="form-text">Nunca compartiremos tu correo.</div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer px-0">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary">Enviar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </nav>
-        <!-- El navbar para el usuario logueado -->
-        <div th:if="${usuarioLogueado != null}">
+            <!-- El navbar para el persona logueado -->
+            <div th:if="${personaLogueado != null}">
                 <div class="modal fade" id="sidebarModal" tabindex="-1" aria-labelledby="sidebarModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-end"
@@ -74,7 +210,7 @@
                             <div class="modal-header border-0 d-flex flex-column align-items-start">
                                 <div class="d-flex align-items-center w-100 mb-2">
                                     <i class="bi bi-person-circle fs-1 me-2 text-secondary"></i>
-                                    <span class="fw-bold fs-5" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
+                                    <span class="fw-bold fs-5" th:text="${personaLogueado.nombre}">persona</span>
                                 </div>
                                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
                             </div>
@@ -128,6 +264,7 @@
                     </div>
                 </div>
             </div>
+        </nav>
     </header>
 
 
@@ -137,22 +274,69 @@
                 <h2 class="text-center">Mis Cursos Inscritos</h2>
                 <table class="table table-responsive table-striped table-hover shadow-sm rounded-3">
                     <thead class="table-dark">
-                        <tr>
-                            <th>Curso</th>
-                            <th>Duración</th>
-                            <th>Costo</th>
-                        </tr>
+                    <tr>
+                        <th>Curso</th>
+                        <th>Duración</th>
+                        <th>Costo</th>
+                        <th>Acciones</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="curso : ${cursos}">
-                            <td th:text="${curso.nombre}"></td>
-                            <td th:text="${curso.horas + ' horas'}"></td>
-                            <td th:text="${curso.precio == 0 ? 'Gratis' : 'S/ ' + curso.precio}"></td>
-                        </tr>
+                    <tr th:each="curso : ${cursos}">
+                        <td th:text="${curso.nombre}"></td>
+                        <td th:text="${curso.horas + ' horas'}"></td>
+                        <td th:text="${curso.precio == 0 ? 'Gratis' : 'S/ ' + curso.precio}"></td>
+                        <td>
+                            <button class="btn btn-sm btn-danger"
+                                    data-bs-toggle="modal"
+                                    th:attr="data-bs-target='#desinscribirModal-' + ${curso.id}">
+                                Desinscribirse
+                            </button>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
+
+                <!-- 🔹 Total a pagar -->
+                <div class="alert alert-info d-flex justify-content-between align-items-center shadow-sm" role="alert">
+                    <div>
+                        <i class="bi bi-wallet2 me-2"></i>
+                        <strong>Total a pagar:</strong>
+                    </div>
+                    <div>
+                    <span class="fs-4 fw-bold text-primary">
+                        S/ <span th:text="${#lists.isEmpty(cursos) ? '0.00' : #aggregates.sum(cursos.![precio])}">0.00</span>
+                    </span>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Modales dinámicos -->
+        <div th:each="curso : ${cursos}">
+            <div class="modal fade" th:id="'desinscribirModal-' + ${curso.id}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirmar Desinscripción</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Estás seguro que quieres desinscribirte del curso
+                            <strong th:text="${curso.nombre}"></strong>?
+                        </div>
+                        <div class="modal-footer">
+                            <form th:action="@{/desinscribirse}" method="post">
+                                <input type="hidden" name="courseId" th:value="${curso.id}">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-danger">Sí, desinscribirme</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </main>
     <!-- FOOTER -->
     <footer class="bg-dark text-white pt-5 pb-4 mt-auto">

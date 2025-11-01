@@ -12,11 +12,10 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body class="bg-light bg-opacity-10 d-flex flex-column min-vh-100">
     <header class="bg-dark shadow-sm">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-
 
                 <a class="navbar-brand text-light fw-bold" href="index">MDW</a>
                 <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
@@ -45,17 +44,19 @@
                         <li class="nav-item"><a class="nav-link text-light" href="/niveles">Niveles</a></li>
                     </ul>
 
-                    <div th:if="${usuarioLogueado == null}">
+                    <div th:if="${personaLogueado == null}">
                         <button class="btn btn-outline-light" data-bs-toggle="modal"
                             data-bs-target="#loginModal">Login</button>
                     </div>
 
-                    <div th:if="${usuarioLogueado != null}">
-                        <span class="text-white fw-bold ms-2" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
+
+
+                    <div th:if="${personaLogueado != null}">
+                        <span class="text-white fw-bold ms-2" th:text="${personaLogueado.nombre}">persona</span>
 
                         <a href="/logout" class="btn btn-outline-danger ms-2">Cerrar sesión</a>
                         <button class="btn btn-outline-light ms-2" data-bs-toggle="modal"
-                            data-bs-target="#sidebarModal"> <i class="bi bi-list fs-3"></i></button>
+                            data-bs-target="#sidebarModal"> <i class="bi bi-list fs-3"></i>
                     </div>
 
                     <!-- Modal Login -->
@@ -69,8 +70,8 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="mb-3">
-                                        <label for="loginId" class="form-label">ID de Usuario</label>
-                                        <input type="text" class="form-control" id="loginId" name="idUsuario"
+                                        <label for="loginEmail" class="form-label">Email</label>
+                                        <input type="text" class="form-control" id="loginEmail" name="email"
                                             autocomplete="off" required>
                                     </div>
                                     <div class="mb-3">
@@ -99,9 +100,14 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="registerId" class="form-label">ID de Usuario</label>
-                                        <input type="text" class="form-control" id="registerId" name="idUsuario"
+                                     <div class="mb-3">
+                                        <label for="registerNombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="registerNombre" name="nombre"
+                                            autocomplete="off" required>
+                                    </div>
+                                     <div class="mb-3">
+                                        <label for="registerApellido" class="form-label">Apellido</label>
+                                        <input type="text" class="form-control" id="registerApellido" name="apellido"
                                             autocomplete="off" required>
                                     </div>
                                     <div class="mb-3">
@@ -126,50 +132,48 @@
                     </div>
 
                     <!-- Modal Contactanos -->
-                    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel"
-                        aria-hidden="true">
+                    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg modal-dialog-scrollable">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
+                                <form th:action="@{/contacto}" method="post">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
                                         <div class="row g-3 mb-3">
                                             <div class="col-md-4">
                                                 <label for="nombre" class="form-label">Nombre</label>
-                                                <input type="text" class="form-control" id="nombre" required>
+                                                <input type="text" class="form-control" id="nombre" name="nombre" required>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
-                                                <input type="text" class="form-control" id="apellidoPaterno" required>
+                                                <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno" required>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
-                                                <input type="text" class="form-control" id="apellidoMaterno" required>
+                                                <input type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno" required>
                                             </div>
                                         </div>
                                         <div class="row g-3 mb-3">
                                             <div class="col-md-6">
                                                 <label for="distrito" class="form-label">Distrito</label>
-                                                <input type="text" class="form-control" id="distrito" required>
+                                                <input type="text" class="form-control" id="distrito" name="distrito" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="dni" class="form-label">DNI</label>
-                                                <input type="text" class="form-control" id="dni" required
-                                                    pattern="\d{8}" title="El DNI debe tener 8 dígitos.">
+                                                <input type="text" class="form-control" id="dni" name="dni" required pattern="\d{8}"
+                                                    title="El DNI debe tener 8 dígitos.">
                                             </div>
                                         </div>
                                         <div class="row g-3 mb-3">
                                             <div class="col-md-6">
                                                 <label for="telefono" class="form-label">Teléfono/Celular</label>
-                                                <input type="tel" class="form-control" id="telefono" required>
+                                                <input type="tel" class="form-control" id="telefono" name="telefono" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="nivel" class="form-label">Nivel</label>
-                                                <select class="form-select" id="nivel" required>
+                                                <select class="form-select" id="nivel" name="nivel" required>
                                                     <option selected disabled value="">Selecciona un nivel...</option>
                                                     <option>Escolar</option>
                                                     <option>Academia</option>
@@ -179,24 +183,23 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Correo Electrónico</label>
-                                            <input type="email" class="form-control" id="email"
-                                                placeholder="email@ejemplo.com" required>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="email@ejemplo.com" required>
                                             <div id="emailHelp" class="form-text">Nunca compartiremos tu correo.</div>
                                         </div>
-                                        <div class="modal-footer px-0">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary">Enviar</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="modal-footer px-0">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary">Enviar</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
-            <!-- El navbar para el usuario logueado -->
-           <div th:if="${usuarioLogueado != null}">
+            <!-- El navbar para el persona logueado -->
+            <div th:if="${personaLogueado != null}">
                 <div class="modal fade" id="sidebarModal" tabindex="-1" aria-labelledby="sidebarModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-end"
@@ -205,7 +208,7 @@
                             <div class="modal-header border-0 d-flex flex-column align-items-start">
                                 <div class="d-flex align-items-center w-100 mb-2">
                                     <i class="bi bi-person-circle fs-1 me-2 text-secondary"></i>
-                                    <span class="fw-bold fs-5" th:text="${usuarioLogueado.idUsuario}">Usuario</span>
+                                    <span class="fw-bold fs-5" th:text="${personaLogueado.nombre}">persona</span>
                                 </div>
                                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
                             </div>
@@ -353,6 +356,7 @@
         </div>
     </div>
     </main>
+
     <!-- Footer -->
     <footer class="bg-dark text-white pt-5 pb-4 mt-auto">
         <div class="container text-center text-md-start">
@@ -361,7 +365,7 @@
                 <!-- Sección: Nosotros -->
                 <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
                     <h5 class="text-uppercase fw-bold mb-4">Nosotros</h5>
-                    <p><a href="Nosotros" class="text-white text-decoration-none">Conócenos</a></p>
+                    <p><a href="/Nosotros" class="text-white text-decoration-none">Conócenos</a></p>
                     <p>
                         <a href="#" class="text-white text-decoration-none" data-bs-toggle="modal"
                             data-bs-target="#contactModal">
@@ -373,7 +377,7 @@
                 <!-- Sección: Términos -->
                 <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                     <h5 class="text-uppercase fw-bold mb-4">Términos</h5>
-                    <p><a href="../Términos y Condiciones de Uso.pdf" target="_blank"
+                    <p><a href="Términos y Condiciones de Uso.pdf" target="_blank"
                             class="text-white text-decoration-none">Términos y condiciones</a></p>
                 </div>
 
@@ -397,7 +401,7 @@
                 <!-- Sección: QR -->
                 <div class="col-md-3 col-lg-2 col-xl-2 ms-auto mb-4 text-center">
                     <h5 class="text-uppercase fw-bold mb-4">Escanéame</h5>
-                    <img src="../img/qrcode-generado.png" alt="QR" class="img-fluid rounded shadow"
+                    <img src="img/qrcode-generado.png" alt="QR" class="img-fluid rounded shadow"
                         style="max-width:150px;">
                 </div>
             </div>
@@ -406,37 +410,6 @@
             <div class="text-center p-3 border-top border-secondary">
                 © 2025 MDW academy
             </div>
-
-            <!-- Sección: Síguenos -->
-            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
-                <h5 class="text-uppercase fw-bold mb-4">Síguenos</h5>
-                <a href="https://www.facebook.com/" target="_blank" class="btn btn-outline-light btn-floating m-1">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="https://www.instagram.com/" target="_blank" class="btn btn-outline-light btn-floating m-1">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://www.twitter.com/" target="_blank" class="btn btn-outline-light btn-floating m-1">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="https://www.linkedin.com/" target="_blank" class="btn btn-outline-light btn-floating m-1">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-            </div>
-
-            <!-- Sección: QR -->
-            <div class="col-md-3 col-lg-2 col-xl-2 ms-auto mb-4 text-center">
-                <h5 class="text-uppercase fw-bold mb-4">Escanéame</h5>
-                <img src="../img/qrcode-generado.png" alt="QR" class="img-fluid rounded shadow"
-                    style="max-width:150px;">
-            </div>
-        </div>
-
-
-        <!-- Derechos -->
-        <div class="text-center p-3 border-top border-secondary">
-            © 2025 MDW academy
-        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
