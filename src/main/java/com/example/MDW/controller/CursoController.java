@@ -1,5 +1,6 @@
 package com.example.MDW.controller;
 
+import com.example.MDW.model.Alumno;
 import com.example.MDW.model.Curso;
 import com.example.MDW.model.Inscripcion;
 import com.example.MDW.model.Persona;
@@ -29,6 +30,61 @@ public class CursoController {
         this.inscripcionService = inscripcionService;
     }
 
+    @PostMapping("/inscribirse")
+    public String inscribirse(@RequestParam Long courseId,
+                              @RequestParam String registrationDate,
+                              HttpSession session,
+                              RedirectAttributes redirectAttrs) {
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        if (persona == null || persona.getAlumno() == null) {
+            redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para inscribirte en un curso.");
+            return "redirect:/cursos";
+        }
+
+        Alumno alumno = persona.getAlumno();
+        Curso curso = cursoService.findById(courseId);
+        if (curso == null) {
+            redirectAttrs.addFlashAttribute("error", "El curso no existe.");
+            return "redirect:/cursos";
+        }
+
+        // 🔹 Validación de duplicado antes de registrar
+        if (inscripcionService.existeInscripcion(alumno.getId(), courseId)) {
+            redirectAttrs.addFlashAttribute("error", "Ya estás inscrito en este curso.");
+            return "redirect:/cursos";
+        }
+
+        LocalDate fecha = LocalDate.parse(registrationDate);
+
+        inscripcionService.registrar(alumno, curso, fecha);
+
+        redirectAttrs.addFlashAttribute("success", "Inscripción realizada con éxito.");
+        return "redirect:/cursos";
+    }
+
+    @PostMapping("/desinscribirse")
+    public String desinscribirse(@RequestParam Long courseId,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttrs) {
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        if (persona == null) {
+            redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para gestionar tus cursos.");
+            return "redirect:/cursos";
+        }
+
+        Alumno alumno = persona.getAlumno();
+
+        boolean eliminado = inscripcionService.eliminarInscripcion(alumno.getId(), courseId);
+
+        if (eliminado) {
+            redirectAttrs.addFlashAttribute("success", "Te has desinscrito del curso correctamente.");
+        } else {
+            redirectAttrs.addFlashAttribute("error", "No estabas inscrito en este curso.");
+        }
+
+        return "redirect:/cursos/mis-cursos";
+    }
+
     // 🔹 Listar cursos
   @GetMapping
 public String listarCursos(Model model, HttpSession session) {
@@ -40,8 +96,9 @@ public String listarCursos(Model model, HttpSession session) {
     model.addAttribute("personaLogueado", persona);
 
     // 🔹 Mostrar cursos inscritos en el sidebar si hay sesión activa
-    if (persona != null) {
-        List<Curso> cursosInscritos = inscripcionService.obtenerCursosPorPersona(persona.getIdPersona());
+    if (persona != null && persona.getAlumno() != null) {
+        Alumno alumno = persona.getAlumno();
+        List<Curso> cursosInscritos = inscripcionService.obtenerCursosPorAlumno(alumno);
         model.addAttribute("cursosInscritosSidebar", cursosInscritos);
     } else {
         model.addAttribute("cursosInscritosSidebar", List.of());
@@ -51,49 +108,18 @@ public String listarCursos(Model model, HttpSession session) {
 }
 
 
-    @PostMapping("/registrar")
-    public String registrarCurso(
-            @RequestParam("courseId") Long courseId,
-            @RequestParam("registrationDate") String registrationDate,
-            HttpSession session,
-            RedirectAttributes redirectAttrs) {
 
-        Persona persona = (Persona) session.getAttribute("personaLogueado");
-
-        if (persona == null) {
-            redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para inscribirte.");
-            return "redirect:/cursos";
-        }
-
-        try {
-            LocalDate fecha = LocalDate.parse(registrationDate);
-
-            Inscripcion inscripcion = new Inscripcion();
-            inscripcion.setCourseId(courseId);
-            inscripcion.setUserId(persona.getIdPersona());
-            inscripcion.setFecha(fecha);
-
-            inscripcionService.registrar(inscripcion);
-
-            redirectAttrs.addFlashAttribute("success",
-                    "Te has inscrito correctamente al curso con ID: " + courseId);
-
-        } catch (DateTimeParseException ex) {
-            redirectAttrs.addFlashAttribute("error", "Fecha inválida. Usa el formato correcto.");
-        } catch (Exception ex) {
-            redirectAttrs.addFlashAttribute("error", "Ocurrió un error al registrar. Intenta nuevamente.");
-        }
-
-        return "redirect:/cursos";
-    }
-
+    // 🔹 Mostrar los cursos en los que el alumno está inscrito
     @GetMapping("/mis-cursos")
     public String misCursos(Model model, HttpSession session) {
         Persona persona = (Persona) session.getAttribute("personaLogueado");
-        if (persona == null) {
+        if (persona == null || persona.getAlumno() == null) {
             return "redirect:/cursos";
         }
-        List<Curso> cursos = inscripcionService.obtenerCursosPorPersona(persona.getIdPersona());
+
+        Alumno alumno = persona.getAlumno();
+
+        List<Curso> cursos = inscripcionService.obtenerCursosPorAlumno(alumno);
         model.addAttribute("cursos", cursos);
         return "mis-cursos";
     }

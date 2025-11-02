@@ -8,13 +8,22 @@
     public class Persona {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "id_persona") // nombre explícito de la columna
         private Long idPersona;
+
         private String nombre;
         private String apellido;
         private String email;
         private String password;
-       private LocalDate fecha_creacion = LocalDate.now();
-        private String rol = "USER"; // por defecto está pendiente
+        private LocalDate fecha_creacion = LocalDate.now();
+
+        // 🔹 Relación bidireccional con Alumno
+        @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
+        private Alumno alumno;
+
+        // 🔹 Relación bidireccional con Profesor
+        @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
+        private Profesor profesor;
 
         public Persona(String nombre, String apellido, String email, String password ){
             this.nombre = nombre;
@@ -63,11 +72,21 @@
         public void setFecha_creacion(LocalDate fecha_creacion) {
             this.fecha_creacion = fecha_creacion;
         }
-        public String getRol() {
-            return rol;
+
+        public Alumno getAlumno() {
+            return alumno;
         }
-        public void setRol(String rol) {
-            this.rol = rol;
+
+        public void setAlumno(Alumno alumno) {
+            this.alumno = alumno;
+        }
+
+        public Profesor getProfesor() {
+            return profesor;
+        }
+
+        public void setProfesor(Profesor profesor) {
+            this.profesor = profesor;
         }
 
     }

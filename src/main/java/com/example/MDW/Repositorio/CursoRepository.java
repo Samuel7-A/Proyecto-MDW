@@ -1,10 +1,12 @@
+
 package com.example.MDW.Repositorio;
 
 import org.springframework.stereotype.Repository;
+import com.example.MDW.model.Curso;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.MDW.model.Alumno;
 
 @Repository
-public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
-    Alumno findByPersonaIdPersona(Long idPersona);
+public interface CursoRepository extends JpaRepository<Curso, Long> {
+
 }
+
