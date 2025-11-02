@@ -11,8 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Inscripcion {
 
     @Id
@@ -37,35 +41,10 @@ public class Inscripcion {
     @JoinColumn(name = "id_alumno")
     private Alumno alumno;
 
-    public Inscripcion() {}
-
     public Inscripcion(Curso curso, Alumno alumno, LocalDate fecha, EstadoInscripcion estado) {
         this.curso = curso;
         this.alumno = alumno;
         this.fecha = fecha;
-        this.estado = estado;
-    }
-
-    // Getters y Setters
-    public Long getId() {return idInscripcion;}
-    public void setId(Long idInscripcion) {this.idInscripcion = idInscripcion;}
-
-    public LocalDate getFecha() {return fecha;}
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public Curso getCurso() { return curso; }
-    public void setCurso(Curso curso) { this.curso = curso; }
-
-    public Alumno getAlumno() { return alumno; }
-    public void setAlumno(Alumno alumno) { this.alumno = alumno; }
-
-    public EstadoInscripcion getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoInscripcion estado) {
         this.estado = estado;
     }
 

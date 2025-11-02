@@ -4,8 +4,7 @@ import com.example.MDW.Repositorio.PersonaRepository;
 import com.example.MDW.model.Persona;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonaService {
@@ -21,6 +20,8 @@ public class PersonaService {
     }
 
     public Persona login(String email, String password) {
-        return personaRepository.findByEmailAndPassword(email, password);
+        return personaRepository.findFirstByEmailAndPassword(email, password)
+                .orElseThrow(() -> new RuntimeException("Usuario o contraseña incorrectos"));
     }
+
 }

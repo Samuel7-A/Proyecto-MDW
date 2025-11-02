@@ -1,8 +1,12 @@
 
 package com.example.MDW.config;
 
+import com.example.MDW.Repositorio.AlumnoRepository;
+import com.example.MDW.Repositorio.PersonaRepository;
+import com.example.MDW.model.Alumno;
 import com.example.MDW.model.Curso;
 import com.example.MDW.Repositorio.CursoRepository;
+import com.example.MDW.model.Persona;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,11 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private CursoRepository cursoRepository;
+    private final PersonaRepository personaRepository;
+
+    public DataLoader(PersonaRepository personaRepository) {
+        this.personaRepository = personaRepository;
+    }
 
     @Override
     public void run(String... args) throws Exception {
@@ -36,5 +45,12 @@ public class DataLoader implements CommandLineRunner {
                     "Realiza pruebas de penetración y evalúa vulnerabilidades en sistemas reales",
                     "curso5.jpg", 55, 120.0, "Avanzado"));
         }
+        // Crear nueva Persona
+        Persona persona = new Persona("Ariel", "Pérez", "a@a.com", "123");
+        // Crear Alumno asociado
+        Alumno alumno = new Alumno(persona);
+        persona.setAlumno(alumno);
+        // Guardar Persona (cascade guarda Alumno)
+        personaRepository.save(persona);
     }
 }

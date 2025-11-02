@@ -20,7 +20,7 @@ public class InscripcionService {
 
     // 🔹 Registrar inscripción
     public Inscripcion registrar(Alumno alumno, Curso curso, LocalDate fecha) {
-        if (inscripcionRepository.existsByAlumnoIdAndCursoId(alumno.getId(), curso.getId())) {
+        if (inscripcionRepository.existsByAlumnoIdAndCursoId(alumno.getId(), curso.getIdCurso())) {
             throw new IllegalArgumentException("El alumno ya está inscrito en este curso.");
         }
 

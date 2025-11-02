@@ -1,9 +1,14 @@
 package com.example.MDW.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Profesor {
 
     @Id
@@ -22,7 +27,6 @@ public class Profesor {
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Curso> cursos;
 
-    public Profesor() {}
 
     public Profesor(Persona persona, String especialidad) {
         this.persona = persona;
@@ -30,35 +34,8 @@ public class Profesor {
     }
 
     // Getters y Setters
-    public Long getId() { 
-        return idProfesor; 
-    }
+    public Long getId() { return idProfesor;}
 
-    public void setId(Long idProfesor) { 
-        this.idProfesor = idProfesor; 
-    }
+    public void setId(Long idProfesor) { this.idProfesor = idProfesor;}
 
-    public Persona getPersona() { 
-        return persona; 
-    }
-
-    public void setPersona(Persona persona) { 
-        this.persona = persona; 
-    }
-
-    public String getEspecialidad() { 
-        return especialidad; 
-    }
-
-    public void setEspecialidad(String especialidad) { 
-        this.especialidad = especialidad; 
-    }
-
-    public List<Curso> getCursos() { 
-        return cursos; 
-    }
-
-    public void setCursos(List<Curso> cursos) { 
-        this.cursos = cursos; 
-    }
 }
