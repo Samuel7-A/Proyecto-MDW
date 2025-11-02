@@ -1,19 +1,38 @@
 package com.example.MDW.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.*;
+
+@Entity
 public class Curso {
-    private Long id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_curso")
+    private Long idCurso;
+    
     private String nombre;
     private String descripcion;
     private String imagen;
-    private int horas;
+    private int horas; //Cambiar a duracion
     private double precio;   // nuevo campo
     private String nivel;    // nuevo campo (ej: Básico, Intermedio, Avanzado)
+
+    // 🔹 Nueva relación: muchos cursos pueden ser dictados por un profesor
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_profesor") // 👉 Nombre de la columna FK en la tabla curso
+    private Profesor profesor;
+
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Inscripcion> inscripciones = new ArrayList<>();
 
     public Curso() {
     }
 
-    public Curso(Long id, String nombre, String descripcion, String imagen, int horas, double precio, String nivel) {
-        this.id = id;
+    public Curso(Long idCurso, String nombre, String descripcion, String imagen, int horas, double precio, String nivel) {
+        this.idCurso = idCurso;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.imagen = imagen;
@@ -23,8 +42,8 @@ public class Curso {
     }
 
     // Getters y setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() { return idCurso; }
+    public void setId(Long idCurso) { this.idCurso = idCurso; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
@@ -43,4 +62,22 @@ public class Curso {
 
     public String getNivel() { return nivel; }
     public void setNivel(String nivel) { this.nivel = nivel; }
+
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
+    public List<Inscripcion> getInscripciones() {
+        return inscripciones;
+    }
+
+    public void setInscripciones(List<Inscripcion> inscripciones) {
+        this.inscripciones = inscripciones;
+    }
+
+
 }

@@ -216,28 +216,15 @@
                             </div>
                             <div class="modal-body px-4">
                                 <div class="list-group list-group-flush mb-4">
-                                    <a href="/dashboard" class="list-group-item list-group-item-action border-0">
-                                        <i class="bi bi-house-door me-2"></i> Reportes
-                                    </a>
                                     <a href="/cursos/mis-cursos"
                                         class="list-group-item list-group-item-action border-0">
                                         <i class="bi bi-journal me-2"></i> Mis cursos
                                     </a>
-                                    <a href="#" class="list-group-item list-group-item-action border-0">
-                                        <i class="bi bi-newspaper me-2"></i> Nuevo
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-action border-0">
-                                        <i class="bi bi-person me-2"></i> Actualizar Perfil
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-action border-0">
-                                        <i class="bi bi-award me-2"></i> Logros
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-action border-0">
-                                        <i class="bi bi-clock-history me-2"></i> Historial
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-action border-0">
-                                        <i class="bi bi-translate me-2"></i> Idiomas
-                                    </a>
+                                    <form action="/convertirProfesor" method="post" class="list-group-item border-0 p-0 m-0">
+                                        <button type="submit" class="btn w-100 text-start border-0">
+                                            <i class="bi bi-mortarboard me-2"></i> Convertirme en profesor
+                                        </button>
+                                    </form>
                                     <a href="#" class="list-group-item list-group-item-action border-0">
                                         <i class="bi bi-question-circle me-2"></i> Ayuda
                                     </a>
@@ -264,6 +251,7 @@
                     </div>
                 </div>
             </div>
+
         </nav>
     </header>
 

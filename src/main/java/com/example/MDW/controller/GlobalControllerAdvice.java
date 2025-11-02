@@ -1,6 +1,7 @@
 
 package com.example.MDW.controller;
 
+import com.example.MDW.model.Alumno;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import com.example.MDW.model.Curso;
@@ -9,7 +10,6 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import com.example.MDW.service.InscripcionService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 
 import java.util.Collections;
 import java.util.List;
@@ -32,8 +32,9 @@ public class GlobalControllerAdvice {
     @ModelAttribute("cursosInscritosSidebar")
     public List<Curso> cursosInscritosSidebar(HttpSession session) {
         Persona persona = (Persona) session.getAttribute("personaLogueado");
-        if (persona != null) {
-            return inscripcionService.obtenerCursosPorPersona(persona.getIdPersona());
+        if (persona != null && persona.getAlumno() != null) {
+            Alumno alumno = persona.getAlumno();
+            return inscripcionService.obtenerCursosPorAlumno(alumno);
         }
         return Collections.emptyList();
     }

@@ -9,8 +9,9 @@ public class Alumno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     @OneToOne
-    @JoinColumn(name = "persona_id")
+    @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
     private Persona persona;
 
     public Alumno() {

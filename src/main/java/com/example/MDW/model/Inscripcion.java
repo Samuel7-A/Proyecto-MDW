@@ -2,34 +2,71 @@ package com.example.MDW.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Inscripcion {
-    private Long id;         // 🔹 este es el que estamos llenando en el servicio
-    private Long courseId;   // id del curso
-    private Long userId;   // id del usuario
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_incripcion")
+    private Long idInscripcion;         // 🔹 este es el que estamos llenando en el servicio
+
+    @Column(name = "fecha_inscripcion")
     private LocalDate fecha; // fecha de inscripción
 
+    public enum EstadoInscripcion { PENDIENTE, APROBADA, CANCELADA }
+    @Enumerated(EnumType.STRING)
+    private EstadoInscripcion estado = EstadoInscripcion.PENDIENTE;
+
+    // 🔹 Muchas inscripciones pertenecen a un curso
+    @ManyToOne
+    @JoinColumn(name = "id_curso")
+    private Curso curso;
+
+    // 🔹 Muchas inscripciones pertenecen a un alumno
+    @ManyToOne
+    @JoinColumn(name = "id_alumno")
+    private Alumno alumno;
 
     public Inscripcion() {}
 
-    public Inscripcion(Long courseId, Long userId, LocalDate fecha) {
-        this.courseId = courseId;
-        this.userId = userId;
+    public Inscripcion(Curso curso, Alumno alumno, LocalDate fecha, EstadoInscripcion estado) {
+        this.curso = curso;
+        this.alumno = alumno;
         this.fecha = fecha;
+        this.estado = estado;
     }
 
     // Getters y Setters
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id = id;}
-
-    public Long getCourseId() {return courseId;}
-    public void setCourseId(Long courseId) {this.courseId = courseId;}
-
-    public Long getUserId() {return userId;}
-    public void setUserId(Long userId) {this.userId = userId;}
+    public Long getId() {return idInscripcion;}
+    public void setId(Long idInscripcion) {this.idInscripcion = idInscripcion;}
 
     public LocalDate getFecha() {return fecha;}
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
+    }
+
+    public Curso getCurso() { return curso; }
+    public void setCurso(Curso curso) { this.curso = curso; }
+
+    public Alumno getAlumno() { return alumno; }
+    public void setAlumno(Alumno alumno) { this.alumno = alumno; }
+
+    public EstadoInscripcion getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoInscripcion estado) {
+        this.estado = estado;
     }
 
 }
