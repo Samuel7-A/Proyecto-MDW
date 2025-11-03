@@ -24,12 +24,11 @@ public class InscripcionService {
             throw new IllegalArgumentException("El alumno ya está inscrito en este curso.");
         }
 
-        // ✅ Ajuste: tu constructor tiene 4 parámetros (curso, alumno, fecha, estado)
+        // ✅ Ajuste: tu constructor tiene 3 parámetros (curso, alumno, fecha)
         Inscripcion inscripcion = new Inscripcion(
             curso,
             alumno,
-            fecha != null ? fecha : LocalDate.now(),
-            Inscripcion.EstadoInscripcion.PENDIENTE
+            fecha != null ? fecha : LocalDate.now()
         );
 
         return inscripcionRepository.save(inscripcion);

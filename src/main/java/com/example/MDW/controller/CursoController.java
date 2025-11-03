@@ -56,6 +56,8 @@ public class CursoController {
 
         LocalDate fecha = LocalDate.parse(registrationDate);
 
+        
+
         inscripcionService.registrar(alumno, curso, fecha);
 
         redirectAttrs.addFlashAttribute("success", "Inscripción realizada con éxito.");

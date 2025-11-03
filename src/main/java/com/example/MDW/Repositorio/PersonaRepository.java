@@ -9,6 +9,9 @@ import java.util.Optional;
 @Repository
 public interface PersonaRepository extends JpaRepository<Persona, Long> {
     Optional<Persona> findFirstByEmailAndPassword(String email, String password);
+
+    boolean existsByEmail(String email);
+    
 }
 
 

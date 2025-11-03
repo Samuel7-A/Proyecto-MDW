@@ -45,12 +45,16 @@ public class DataLoader implements CommandLineRunner {
                     "Realiza pruebas de penetración y evalúa vulnerabilidades en sistemas reales",
                     "curso5.jpg", 55, 120.0, "Avanzado"));
         }
-        // Crear nueva Persona
-        Persona persona = new Persona("Ariel", "Pérez", "a@a.com", "123");
-        // Crear Alumno asociado
-        Alumno alumno = new Alumno(persona);
-        persona.setAlumno(alumno);
-        // Guardar Persona (cascade guarda Alumno)
-        personaRepository.save(persona);
+        
+        // --- PERSONA / ALUMNO ---
+        // Validar por correo antes de insertar
+        String email = "a@a.com";
+        if (!personaRepository.existsByEmail(email)) {
+            Persona persona = new Persona("Ariel", "Pérez", email, "123");
+            Alumno alumno = new Alumno(persona);
+            persona.setAlumno(alumno);
+            personaRepository.save(persona);
+        }
+
     }
 }
