@@ -50,7 +50,7 @@ public class HomeController {
             // 🔹 Vincular el alumno si existe
             Alumno alumno = alumnoService.buscarPorPersonaId(persona.getIdPersona());
             if (alumno != null) {
-                persona.setAlumno(alumno); // 🔥 ahora sí, tu persona tiene su alumno cargado
+                persona.setAlumno(alumno); // ahora sí, tu persona tiene su alumno cargado
             }
 
             session.setAttribute("personaLogueado", persona);
