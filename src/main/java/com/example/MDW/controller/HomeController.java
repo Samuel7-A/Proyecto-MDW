@@ -28,6 +28,8 @@ public class HomeController {
     private PersonaService personaService;
     @Autowired
     private AlumnoService alumnoService;
+    @Autowired
+    private ProfesorService profesorService;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -51,6 +53,12 @@ public class HomeController {
             Alumno alumno = alumnoService.buscarPorPersonaId(persona.getIdPersona());
             if (alumno != null) {
                 persona.setAlumno(alumno); // ahora sí, tu persona tiene su alumno cargado
+            }
+
+            Profesor profesor = profesorService.buscarPorPersonaId(persona.getIdPersona());
+            if (profesor != null) {
+                profesor.setPersona(persona); // fuerza vínculo bidireccional
+                persona.setProfesor(profesor);
             }
 
             session.setAttribute("personaLogueado", persona);
@@ -97,8 +105,12 @@ public class HomeController {
             // Si aún no tiene un Profesor asociado
             if (persona.getProfesor() == null) {
                 Profesor profesor = new Profesor(persona, "Sin especialidad");
-                persona.setProfesor(profesor); // 🔹 Se asocia desde Persona
-                personaService.registrar(persona); // 🔹 Solo se guarda Persona (cascade guarda Profesor también)
+                persona.setProfesor(profesor); // Se asocia desde Persona
+                personaService.registrar(persona); // Solo se guarda Persona (cascade guarda Profesor también)
+
+            // 🔹 Recarga la persona con su profesor desde la BD
+            Persona personaActualizada = personaService.buscarPorId(persona.getIdPersona());
+            session.setAttribute("personaLogueado", personaActualizada);
 
                 model.addAttribute("mensaje", "Ahora también eres profesor. Puedes crear cursos.");
             } else {

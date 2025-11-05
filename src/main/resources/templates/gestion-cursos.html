@@ -75,7 +75,7 @@
     </div>
 
     <!-- LISTA DE CURSOS -->
-    <h3 class="text-center mt-4 mb-3">Cursos Registrados</h3>
+    <h3 class="text-center mt-4 mb-3">Cursos Creados</h3>
 
     <table class="table table-striped table-hover shadow-sm rounded-3">
         <thead class="table-dark">
@@ -89,6 +89,10 @@
         </thead>
 
         <tbody>
+        <tr th:if="${#lists.isEmpty(cursos)}">
+            <td colspan="5" class="text-center text-muted">Cree un curso para visualizar los cursos.</td>
+        </tr>
+
         <tr th:each="curso : ${cursos}">
             <td th:text="${curso.nombre}"></td>
             <td th:text="${curso.nivel}"></td>
@@ -98,10 +102,11 @@
             <td>
 
                 <!-- Editar -->
-                <a class="btn btn-sm btn-warning me-2"
-                   th:href="@{/cursos/editar/{id}(id=${curso.id})}">
+                <button class="btn btn-sm btn-warning me-2"
+                        data-bs-toggle="modal"
+                        th:attr="data-bs-target='#editarModal-' + ${curso.id}">
                     <i class="bi bi-pencil-square"></i> Editar
-                </a>
+                </button>
 
                 <!-- Eliminar -->
                 <button class="btn btn-sm btn-danger"
@@ -112,6 +117,7 @@
 
             </td>
         </tr>
+        
         </tbody>
     </table>
 
@@ -139,6 +145,66 @@
                         </form>
                     </div>
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALES DINÁMICOS PARA EDITAR -->
+    <div th:each="curso : ${cursos}">
+        <div class="modal fade" th:id="'editarModal-' + ${curso.id}" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Curso</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <form th:action="@{/cursos/editar}" method="post" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <input type="hidden" name="id" th:value="${curso.id}"/>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Nombre</label>
+                                    <input type="text" name="nombre" th:value="${curso.nombre}" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Imagen</label>
+                                    <input type="file" name="imagen" accept="image/*" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Horas</label>
+                                    <input type="number" name="horas" th:value="${curso.horas}" class="form-control" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Precio (S/.)</label>
+                                    <input type="number" name="precio" th:value="${curso.precio}" step="0.10" class="form-control" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Nivel</label>
+                                    <select name="nivel" class="form-select">
+                                        <option th:selected="${curso.nivel == 'Escolar'}">Escolar</option>
+                                        <option th:selected="${curso.nivel == 'Academia'}">Academia</option>
+                                        <option th:selected="${curso.nivel == 'Universitario'}">Universitario</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Descripción</label>
+                                    <textarea name="descripcion" class="form-control" rows="3" th:text="${curso.descripcion}"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Guardar cambios</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

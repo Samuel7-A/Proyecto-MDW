@@ -23,6 +23,10 @@ public class PersonaService {
     // Busca una persona con ese email y contraseña
     return personaRepository.findFirstByEmailAndPassword(email, password)
             .orElse(null); 
-}
+    }
+
+    public Persona buscarPorId(Long id) {
+        return personaRepository.findById(id).orElse(null);
+    }
 
 }

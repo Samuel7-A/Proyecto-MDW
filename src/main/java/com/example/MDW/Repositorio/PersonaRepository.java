@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface PersonaRepository extends JpaRepository<Persona, Long> {
     Optional<Persona> findFirstByEmailAndPassword(String email, String password);
 
+    Persona findByEmail(String email);
+
     boolean existsByEmail(String email);
     
 }

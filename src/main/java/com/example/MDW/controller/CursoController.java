@@ -4,6 +4,7 @@ import com.example.MDW.model.Alumno;
 import com.example.MDW.model.Curso;
 import com.example.MDW.model.Inscripcion;
 import com.example.MDW.model.Persona;
+import com.example.MDW.model.Profesor;
 import com.example.MDW.service.CursoService;
 import com.example.MDW.service.InscripcionService;
 import jakarta.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -125,4 +127,141 @@ public String listarCursos(Model model, HttpSession session) {
         model.addAttribute("cursos", cursos);
         return "mis-cursos";
     }
+
+
+    //LOGICA DEL PROFESOR
+    @GetMapping("/gestion")
+    public String gestionarCursos(Model model, HttpSession session) {
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+
+        if (persona == null || persona.getProfesor() == null) {
+            return "redirect:/login";
+        }
+
+        // ✅ Log para verificar el ID del profesor
+        System.out.println("ID del profesor: " + persona.getProfesor().getIdProfesor());
+
+        List<Curso> cursos = cursoService.obtenerCursosPorProfesor(persona.getProfesor().getIdProfesor());
+
+        // ✅ Log para verificar cuántos cursos se obtienen
+        System.out.println("Cursos encontrados: " + cursos.size());
+
+        model.addAttribute("cursos", cursos);
+        model.addAttribute("cursoEdit", new Curso()); // para posible edición
+        return "gestion-cursos";
+    }
+
+    @PostMapping("/crear")
+    public String crearCurso(@RequestParam String nombre,
+                            @RequestParam String descripcion,
+                            @RequestParam("imagen") MultipartFile imagen,
+                            @RequestParam int horas,
+                            @RequestParam double precio,
+                            @RequestParam String nivel,
+                            HttpSession session,
+                            RedirectAttributes redirectAttrs) {
+
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        if (persona == null || persona.getProfesor() == null) {
+            redirectAttrs.addFlashAttribute("error", "No tienes permisos para crear cursos.");
+            return "redirect:/cursos/gestion";
+        }
+
+        Profesor profesor = persona.getProfesor();
+
+        try {
+            String nombreImagen = "default.jpg";
+
+            // 📁 Si el usuario sube una imagen, la guardamos físicamente
+            if (imagen != null && !imagen.isEmpty()) {
+                // Carpeta donde guardarás las imágenes
+                String carpeta = "src/main/resources/static/img/";
+                java.nio.file.Path rutaCarpeta = java.nio.file.Paths.get(carpeta);
+
+                // Guardar el archivo con su nombre original
+                nombreImagen = imagen.getOriginalFilename();
+                java.nio.file.Path rutaArchivo = rutaCarpeta.resolve(nombreImagen);
+
+                // Copiar archivo (si existe, se reemplaza)
+                java.nio.file.Files.copy(imagen.getInputStream(), rutaArchivo, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            // 🧩 Crear curso con el nombre de la imagen (guardado en BD)
+            Curso nuevoCurso = new Curso(null, nombre, descripcion, nombreImagen, horas, precio, nivel, profesor);
+            cursoService.guardar(nuevoCurso);
+
+            redirectAttrs.addFlashAttribute("success", "Curso creado con éxito.");
+            return "redirect:/cursos/gestion";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttrs.addFlashAttribute("error", "Error al subir la imagen o crear el curso.");
+            return "redirect:/cursos/gestion";
+        }
+    }
+
+    @PostMapping("/editar")
+    public String editarCurso(@RequestParam Long id,
+                            @RequestParam String nombre,
+                            @RequestParam("imagen") MultipartFile imagen,
+                            @RequestParam String descripcion,
+                            @RequestParam int horas,
+                            @RequestParam double precio,
+                            @RequestParam String nivel,
+                            RedirectAttributes redirectAttrs) {
+
+        System.out.println("ID recibido: " + id);
+        System.out.println("Nombre recibido: " + nombre);
+        System.out.println("Imagen vacía: " + (imagen == null || imagen.isEmpty()));
+
+        Curso curso = cursoService.findById(id);
+        System.out.println("Curso encontrado: " + (curso != null ? curso.getNombre() : "null"));
+        
+        if (curso == null) {
+            redirectAttrs.addFlashAttribute("error", "El curso no existe.");
+            return "redirect:/cursos/gestion";
+        }
+
+        curso.setNombre(nombre);
+        curso.setDescripcion(descripcion);
+        curso.setHoras(horas);
+        curso.setPrecio(precio);
+        curso.setNivel(nivel);
+
+        try {
+            if (imagen != null && !imagen.isEmpty()) {
+                // Carpeta donde guardarás las imágenes
+                String carpeta = "src/main/resources/static/img/";
+                java.nio.file.Path rutaCarpeta = java.nio.file.Paths.get(carpeta);
+
+                // Guardar el archivo con su nombre original
+                String nombreImagen = imagen.getOriginalFilename();
+                java.nio.file.Path rutaArchivo = rutaCarpeta.resolve(nombreImagen);
+
+                // Copiar archivo (si existe, se reemplaza)
+                java.nio.file.Files.copy(imagen.getInputStream(), rutaArchivo,
+                        java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+
+                // Guardar nombre de archivo en la entidad
+                curso.setImagen(nombreImagen);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttrs.addFlashAttribute("error", "Error al subir la imagen.");
+            return "redirect:/cursos/gestion";
+        }
+
+        cursoService.guardar(curso);
+
+        redirectAttrs.addFlashAttribute("success", "Curso actualizado correctamente.");
+        return "redirect:/cursos/gestion";
+    }
+
+    @PostMapping("/eliminar")
+    public String eliminarCurso(@RequestParam Long id, RedirectAttributes redirectAttrs) {
+        cursoService.eliminar(id);
+        redirectAttrs.addFlashAttribute("success", "Curso eliminado correctamente.");
+        return "redirect:/cursos/gestion";
+    }
+
 }

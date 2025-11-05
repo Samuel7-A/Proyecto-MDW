@@ -58,8 +58,7 @@
         <div class="row g-4">
             <div class="col-md-4" th:each="curso : ${cursos}" th:id="${'curso' + curso.id}">
                 <div class="card shadow-sm rounded-4 h-100">
-                    <img th:src="@{'/img/' + ${curso.imagen}}" class="card-img-top rounded-top-4"
-                        th:alt="${curso.nombre}">
+                    <img th:src="@{'/img/' + ${curso.imagen}}" class="card-img-top rounded-top-4" th:alt="${curso.nombre}">
                     <div class="card-body">
 
                         <!-- Nivel dinámico con colores -->

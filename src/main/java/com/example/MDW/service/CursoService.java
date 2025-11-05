@@ -30,4 +30,13 @@ public class CursoService {
         cursoRepository.deleteById(id);
     }
 
+    public List<Curso> obtenerCursosPorProfesor(Long idProfesor) {
+        return cursoRepository.findByProfesorId(idProfesor);
+    }
+
+    // método seguro de obtener cursos por Persona
+    public List<Curso> obtenerCursosPorPersona(Long idPersona) {
+        return cursoRepository.findByProfesorPersonaIdPersona(idPersona);
+    }
+
 }
