@@ -27,10 +27,6 @@ public class Inscripcion {
     @Column(name = "fecha_inscripcion")
     private LocalDate fecha; // fecha de inscripción
 
-    public enum EstadoInscripcion { PENDIENTE, APROBADA, CANCELADA }
-    @Enumerated(EnumType.STRING)
-    private EstadoInscripcion estado = EstadoInscripcion.PENDIENTE;
-
     // 🔹 Muchas inscripciones pertenecen a un curso
     @ManyToOne
     @JoinColumn(name = "id_curso")
@@ -41,11 +37,10 @@ public class Inscripcion {
     @JoinColumn(name = "id_alumno")
     private Alumno alumno;
 
-    public Inscripcion(Curso curso, Alumno alumno, LocalDate fecha, EstadoInscripcion estado) {
+    public Inscripcion(Curso curso, Alumno alumno, LocalDate fecha) {
         this.curso = curso;
         this.alumno = alumno;
         this.fecha = fecha;
-        this.estado = estado;
     }
 
 }

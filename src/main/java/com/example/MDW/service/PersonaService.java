@@ -20,8 +20,13 @@ public class PersonaService {
     }
 
     public Persona login(String email, String password) {
-        return personaRepository.findFirstByEmailAndPassword(email, password)
-                .orElseThrow(() -> new RuntimeException("Usuario o contraseña incorrectos"));
+    // Busca una persona con ese email y contraseña
+    return personaRepository.findFirstByEmailAndPassword(email, password)
+            .orElse(null); 
+    }
+
+    public Persona buscarPorId(Long id) {
+        return personaRepository.findById(id).orElse(null);
     }
 
 }

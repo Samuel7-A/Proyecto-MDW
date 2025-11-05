@@ -1,3 +1,4 @@
+
 package com.example.MDW.controller;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -29,8 +30,6 @@ public class HomeController {
     private AlumnoService alumnoService;
     @Autowired
     private ProfesorService profesorService;
-    @Autowired
-    private InscripcionService inscripcionService;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -44,16 +43,22 @@ public class HomeController {
 
     @PostMapping("/login")
     public String login(@RequestParam String email,
-                        @RequestParam String password,
-                        Model model,
-                        HttpSession session) {
+            @RequestParam String password,
+            Model model,
+            HttpSession session) {
         Persona persona = personaService.login(email, password);
 
         if (persona != null) {
             // 🔹 Vincular el alumno si existe
             Alumno alumno = alumnoService.buscarPorPersonaId(persona.getIdPersona());
             if (alumno != null) {
-                persona.setAlumno(alumno); // 🔥 ahora sí, tu persona tiene su alumno cargado
+                persona.setAlumno(alumno); // ahora sí, tu persona tiene su alumno cargado
+            }
+
+            Profesor profesor = profesorService.buscarPorPersonaId(persona.getIdPersona());
+            if (profesor != null) {
+                profesor.setPersona(persona); // fuerza vínculo bidireccional
+                persona.setProfesor(profesor);
             }
 
             session.setAttribute("personaLogueado", persona);
@@ -66,22 +71,22 @@ public class HomeController {
         return "index";
     }
 
-   @PostMapping("/register")
+    @PostMapping("/register")
     public String register(@RequestParam String nombre,
-                       @RequestParam String apellido,
-                       @RequestParam String email,
-                       @RequestParam String password,
-                       
-                       Model model) {
+            @RequestParam String apellido,
+            @RequestParam String email,
+            @RequestParam String password,
 
-    Persona nuevo = new Persona(nombre, apellido, email, password);
+            Model model) {
 
-    Alumno alumno = new Alumno(nuevo);
-    nuevo.setAlumno(alumno);
-    personaService.registrar(nuevo);
+        Persona nuevo = new Persona(nombre, apellido, email, password);
 
-    model.addAttribute("mensaje", "Persona registrada. Ahora puedes iniciar sesión.");
-    return "index";
+        Alumno alumno = new Alumno(nuevo);
+        nuevo.setAlumno(alumno);
+        personaService.registrar(nuevo);
+
+        model.addAttribute("mensaje", "Persona registrada. Ahora puedes iniciar sesión.");
+        return "index";
 
     }
 
@@ -100,8 +105,12 @@ public class HomeController {
             // Si aún no tiene un Profesor asociado
             if (persona.getProfesor() == null) {
                 Profesor profesor = new Profesor(persona, "Sin especialidad");
-                persona.setProfesor(profesor); // 🔹 Se asocia desde Persona
-                personaService.registrar(persona); // 🔹 Solo se guarda Persona (cascade guarda Profesor también)
+                persona.setProfesor(profesor); // Se asocia desde Persona
+                personaService.registrar(persona); // Solo se guarda Persona (cascade guarda Profesor también)
+
+            // 🔹 Recarga la persona con su profesor desde la BD
+            Persona personaActualizada = personaService.buscarPorId(persona.getIdPersona());
+            session.setAttribute("personaLogueado", personaActualizada);
 
                 model.addAttribute("mensaje", "Ahora también eres profesor. Puedes crear cursos.");
             } else {

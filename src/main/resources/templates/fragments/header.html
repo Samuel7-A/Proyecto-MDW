@@ -207,6 +207,11 @@
                                     <i class="bi bi-mortarboard me-2"></i> Convertirme en profesor
                                 </button>
                             </form>
+                            <a href="/gestion-cursos"
+                            class="list-group-item list-group-item-action border-0"
+                            th:if="${personaLogueado.profesor != null && personaLogueado.profesor != null}">
+                                <i class="bi bi-gear me-2"></i> Gestión de Cursos
+                            </a>
                             <a href="#" class="list-group-item list-group-item-action border-0">
                                 <i class="bi bi-question-circle me-2"></i> Ayuda
                             </a>

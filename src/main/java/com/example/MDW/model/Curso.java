@@ -26,14 +26,16 @@ public class Curso {
     private String nivel;    // nuevo campo (ej: Básico, Intermedio, Avanzado)
 
     // 🔹 Nueva relación: muchos cursos pueden ser dictados por un profesor
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_profesor") // 👉 Nombre de la columna FK en la tabla curso
     private Profesor profesor;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Inscripcion> inscripciones = new ArrayList<>();
 
-    public Curso(Long idCurso, String nombre, String descripcion, String imagen, int horas, double precio, String nivel) {
+    public Curso(Long idCurso, String nombre, String descripcion,
+                String imagen, int horas, double precio, String nivel,
+                Profesor profesor) {
         this.idCurso = idCurso;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -41,6 +43,7 @@ public class Curso {
         this.horas = horas;
         this.precio = precio;
         this.nivel = nivel;
+        this.profesor = profesor;
     }
 
     public Long getId() { return idCurso; }
