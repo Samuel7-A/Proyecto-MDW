@@ -27,13 +27,11 @@ public class securityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthFilter;
 
-    // Bean para encriptar contraseñas con BCrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Proveedor de autenticación
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
@@ -41,43 +39,37 @@ public class securityConfig {
         return authProvider;
     }
 
-    // Bean del AuthenticationManager
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    // Configuración de seguridad HTTP
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/auth/**")
-            )
-            .authorizeHttpRequests(auth -> auth
-                // Rutas públicas (sin autenticación)
-                .requestMatchers(
-                    "/",
-                    "/index",
-                    "/auth/**",
-                    "/login",
-                    "/register",
-                    "/Nosotros",
-                    "/niveles",
-                    "/cursos",
-                    "/css/**",
-                    "/img/**",
-                    "/js/**",
-                    "/*.pdf"
-                ).permitAll()
-                // Todas las demás rutas requieren autenticación
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Permitir sesiones para Thymeleaf
-            )
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/auth/**"))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/",
+                                "/index",
+                                "/auth/**",
+                                "/login",
+                                "/register",
+                                "/Nosotros",
+                                "/niveles",
+                                "/cursos",
+                                "/css/**",
+                                "/img/**",
+                                "/js/**",
+                                "/*.pdf"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                )
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

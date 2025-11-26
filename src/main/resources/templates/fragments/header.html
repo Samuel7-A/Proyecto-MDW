@@ -199,3 +199,30 @@
         </div>
     </div>
 </nav>
+<script>
+    // ⏱️ Monitorear inactividad del usuario
+    let inactivityTimeout;
+    const INACTIVITY_TIME = 15 * 60 * 1000; // 15 minutos en milisegundos
+
+    function resetInactivityTimer() {
+        clearTimeout(inactivityTimeout);
+
+        inactivityTimeout = setTimeout(() => {
+            // Si el usuario está logueado, mostrar alerta
+            const userName = document.querySelector('.navbar-nav .text-white.fw-bold');
+            if (userName) {
+                alert('Tu sesión ha expirado por inactividad. Por favor, inicia sesión de nuevo.');
+                window.location.href = '/';
+            }
+        }, INACTIVITY_TIME);
+    }
+
+    // Detectar actividad del usuario
+    document.addEventListener('click', resetInactivityTimer);
+    document.addEventListener('keypress', resetInactivityTimer);
+    document.addEventListener('mousemove', resetInactivityTimer);
+    document.addEventListener('scroll', resetInactivityTimer);
+
+    // Iniciar timer al cargar la página
+    window.addEventListener('load', resetInactivityTimer);
+</script>

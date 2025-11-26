@@ -94,20 +94,15 @@ public class CursoController {
         List<Curso> cursos = cursoService.listarCursos();
         model.addAttribute("cursos", cursos);
 
-        // 🔹 Obtener persona logueada desde sesión
         Persona persona = (Persona) session.getAttribute("personaLogueado");
         model.addAttribute("personaLogueado", persona);
 
-        // 🔹 Mostrar cursos inscritos en el sidebar si hay sesión activa
         if (persona != null && persona.getAlumno() != null) {
-            Alumno alumno = persona.getAlumno();
-            List<Curso> cursosInscritos = inscripcionService.obtenerCursosPorAlumno(alumno);
+            List<Curso> cursosInscritos = inscripcionService.obtenerCursosPorAlumno(persona.getAlumno());
             model.addAttribute("cursosInscritosSidebar", cursosInscritos);
-        } else {
-            model.addAttribute("cursosInscritosSidebar", List.of());
         }
 
-        return "cursos"; // template: src/main/resources/templates/cursos.html
+        return "cursos";
     }
 
     // 🔹 Mostrar los cursos en los que el alumno está inscrito

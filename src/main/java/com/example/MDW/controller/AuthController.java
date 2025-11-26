@@ -8,9 +8,9 @@ import com.example.MDW.model.Persona;
 import com.example.MDW.service.AlumnoService;
 import com.example.MDW.service.CustomUserDetailsService;
 import com.example.MDW.service.PersonaService;
-import com.example.MDW.service.ProfesorService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,11 +20,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Controller
-@RequestMapping("/auth") // ⚠️ Asegúrate de que tu formulario HTML apunte a /auth/login y /auth/register
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -32,9 +29,6 @@ public class AuthController {
 
     @Autowired
     private AlumnoService alumnoService;
-
-    @Autowired
-    private ProfesorService profesorService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -51,36 +45,36 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@ModelAttribute RegisterRequest request,
                            HttpServletResponse response,
+                           HttpSession session,
                            RedirectAttributes redirectAttrs) {
         try {
-            // 1. Validar si existe
             if (personaService.existsByEmail(request.getEmail())) {
                 redirectAttrs.addFlashAttribute("error", "El email ya está registrado");
-                return "redirect:/"; // O redirigir a la vista de registro
+                return "redirect:/";
             }
 
-            // 2. Crear Persona
             Persona nuevaPersona = new Persona(
                     request.getNombre(),
                     request.getApellido(),
                     request.getEmail(),
-                    request.getPassword() // El servicio debe encriptarla
+                    request.getPassword()
             );
 
-            // 3. Asociar Alumno automáticamente
             Alumno alumno = new Alumno(nuevaPersona);
             nuevaPersona.setAlumno(alumno);
 
-            // 4. Guardar
             Persona personaGuardada = personaService.registrar(nuevaPersona);
 
-            // 5. AUTO-LOGIN: Generar JWT y Cookie para que entre directo
+            // ✅ Generar JWT
             UserDetails userDetails = userDetailsService.loadUserByUsername(personaGuardada.getEmail());
             String token = jwtUtil.generateToken(userDetails);
+
+            // ✅ Guardar en cookie (15 minutos de duración)
             crearCookie(response, token);
+            session.setAttribute("personaLogueado", personaGuardada);
 
             redirectAttrs.addFlashAttribute("success", "Registro exitoso. ¡Bienvenido!");
-            return "redirect:/"; // Redirige al home logueado
+            return "redirect:/";
 
         } catch (Exception e) {
             redirectAttrs.addFlashAttribute("error", "Error al registrar: " + e.getMessage());
@@ -94,9 +88,9 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@ModelAttribute LoginRequest request,
                         HttpServletResponse response,
+                        HttpSession session,
                         RedirectAttributes redirectAttrs) {
         try {
-            // 1. Autenticar con Spring Security
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getEmail(),
@@ -104,26 +98,27 @@ public class AuthController {
                     )
             );
 
-            // 2. Obtener datos del usuario
             Persona persona = personaService.buscarPorEmail(request.getEmail());
 
-            // 3. Generar Claims y Token JWT
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("idPersona", persona.getIdPersona());
-            claims.put("nombre", persona.getNombre());
+            if (persona == null) {
+                redirectAttrs.addFlashAttribute("error", "Usuario no encontrado");
+                return "redirect:/";
+            }
 
-            // Generar Token
-            String token = jwtUtil.generateToken(persona.getEmail(), claims);
+            // ✅ Generar JWT
+            UserDetails userDetails = userDetailsService.loadUserByUsername(persona.getEmail());
+            String token = jwtUtil.generateToken(userDetails);
 
-            // 4. 🍪 GUARDAR JWT EN COOKIE (Vital para MVC)
+            // ✅ Guardar en cookie (15 minutos de duración)
             crearCookie(response, token);
+            session.setAttribute("personaLogueado", persona);
 
             redirectAttrs.addFlashAttribute("success", "Bienvenido " + persona.getNombre());
-            return "redirect:/cursos"; // 👈 Redirige a donde quieras tras el login
+            return "redirect:/cursos";
 
         } catch (BadCredentialsException e) {
             redirectAttrs.addFlashAttribute("error", "Credenciales incorrectas");
-            return "redirect:/"; // Vuelve al formulario
+            return "redirect:/";
         } catch (Exception e) {
             redirectAttrs.addFlashAttribute("error", "Error al iniciar sesión");
             return "redirect:/";
@@ -133,28 +128,42 @@ public class AuthController {
     /**
      * Cerrar Sesión (Logout)
      */
-    @PostMapping("/logout") // O @GetMapping si prefieres enlace directo, pero POST es más seguro
-    public String logout(HttpServletResponse response, RedirectAttributes redirectAttrs) {
-        // Eliminar la cookie sobrescribiéndola con tiempo 0
-        Cookie cookie = new Cookie("JWT_TOKEN", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setPath("/");
-        cookie.setMaxAge(0); // 0 segundos = borrar
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response,
+                         HttpSession session,
+                         RedirectAttributes redirectAttrs) {
+        try {
+            // ✅ Limpiar cookie
+            limpiarCookie(response, "JWT_TOKEN");
 
-        response.addCookie(cookie);
+            // Invalidar sesión
+            session.invalidate();
 
-        redirectAttrs.addFlashAttribute("success", "Has cerrado sesión correctamente.");
+            redirectAttrs.addFlashAttribute("success", "Has cerrado sesión correctamente.");
+        } catch (Exception e) {
+            redirectAttrs.addFlashAttribute("error", "Error al cerrar sesión");
+        }
+
         return "redirect:/";
     }
 
-    // --- Método Auxiliar para crear la Cookie ---
+    // ✅ Crear cookie con JWT
     private void crearCookie(HttpServletResponse response, String token) {
         Cookie cookie = new Cookie("JWT_TOKEN", token);
-        cookie.setHttpOnly(true); // Seguridad: JS no puede leerla
-        cookie.setSecure(false);  // false para localhost (pon true en producción con HTTPS)
-        cookie.setPath("/");      // Disponible en toda la app
-        cookie.setMaxAge(10 * 60 * 60); // 10 horas de duración
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);  // true en producción con HTTPS
+        cookie.setPath("/");
+        cookie.setMaxAge(15 * 60); // 15 minutos
+        response.addCookie(cookie);
+    }
+
+    // ✅ Limpiar cookie
+    private void limpiarCookie(HttpServletResponse response, String nombre) {
+        Cookie cookie = new Cookie(nombre, null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
         response.addCookie(cookie);
     }
 }
