@@ -16,14 +16,14 @@ public class Profesor {
     @Column(name = "id_profesor")
     private Long idProfesor;
 
-    // 🔹 Relación con Persona (FK)
+    //Relación con Persona (FK)
     @OneToOne
     @JoinColumn(name = "id_persona", referencedColumnName = "id_persona") // FK a la tabla Persona
     private Persona persona;
 
     private String especialidad;
 
-    // 🔹 Un profesor puede dictar muchos cursos
+    //un profesor puede dictar muchos cursos
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Curso> cursos;
 

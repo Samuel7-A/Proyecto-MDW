@@ -25,9 +25,9 @@ public class Curso {
     private double precio;   // nuevo campo
     private String nivel;    // nuevo campo (ej: Básico, Intermedio, Avanzado)
 
-    // 🔹 Nueva relación: muchos cursos pueden ser dictados por un profesor
+    // Nueva relación: muchos cursos pueden ser dictados por un profesor
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_profesor") // 👉 Nombre de la columna FK en la tabla curso
+    @JoinColumn(name = "id_profesor") // Nombre de la columna FK en la tabla curso
     private Profesor profesor;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)

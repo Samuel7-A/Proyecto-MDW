@@ -36,8 +36,9 @@ public class GlobalControllerAdvice {
             Alumno alumno = persona.getAlumno();
             return inscripcionService.obtenerCursosPorAlumno(alumno);
         }
-        return Collections.emptyList();
-    }
+        return Collections.emptyList(); //// Devuelve una lista vacía si no hay usuario.
+
+    } 
 }
 
 

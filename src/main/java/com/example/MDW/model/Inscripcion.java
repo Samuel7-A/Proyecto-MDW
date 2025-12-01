@@ -22,17 +22,17 @@ public class Inscripcion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_incripcion")
-    private Long idInscripcion;         // 🔹 este es el que estamos llenando en el servicio
+    private Long idInscripcion;         //este es el que estamos llenando en el servicio
 
     @Column(name = "fecha_inscripcion")
     private LocalDate fecha; // fecha de inscripción
 
-    // 🔹 Muchas inscripciones pertenecen a un curso
+    //Muchas inscripciones pertenecen a un curso
     @ManyToOne
     @JoinColumn(name = "id_curso")
     private Curso curso;
 
-    // 🔹 Muchas inscripciones pertenecen a un alumno
+    //Muchas inscripciones pertenecen a un alumno
     @ManyToOne
     @JoinColumn(name = "id_alumno")
     private Alumno alumno;

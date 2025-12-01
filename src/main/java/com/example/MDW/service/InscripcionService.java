@@ -18,13 +18,13 @@ public class InscripcionService {
     @Autowired
     private InscripcionRepository inscripcionRepository;
 
-    // 🔹 Registrar inscripción
+    //Registrar inscripción
     public Inscripcion registrar(Alumno alumno, Curso curso, LocalDate fecha) {
         if (inscripcionRepository.existsByAlumnoIdAndCursoId(alumno.getId(), curso.getIdCurso())) {
             throw new IllegalArgumentException("El alumno ya está inscrito en este curso.");
         }
 
-        // ✅ Ajuste: tu constructor tiene 3 parámetros (curso, alumno, fecha)
+    
         Inscripcion inscripcion = new Inscripcion(
             curso,
             alumno,
@@ -34,29 +34,29 @@ public class InscripcionService {
         return inscripcionRepository.save(inscripcion);
     }
 
-    // 🔹 Listar inscripciones de una persona
+    //Listar inscripciones de una persona
     public List<Inscripcion> obtenerPorAlumno(Alumno alumno) {
         return inscripcionRepository.findByAlumno(alumno);
     }
 
-    // 🔹 Listar todas las inscripciones (admin, debug)
+    //Listar todas las inscripciones (admin, debug)
     public List<Inscripcion> listarTodas() {
         return inscripcionRepository.findAll();
     }
 
-    // 🔹 Cursos en los que está inscrito una persona
+    //Cursos en los que está inscrito una persona
     public List<Curso> obtenerCursosPorAlumno(Alumno alumno) {
         return inscripcionRepository.findByAlumno(alumno).stream()
                 .map(Inscripcion::getCurso)
                 .collect(Collectors.toList());
     }
 
-    // ✅ Verifica si ya existe una inscripción del alumno en el curso
+    // Verifica si ya existe una inscripción del alumno en el curso
     public boolean existeInscripcion(Long idAlumno, Long idCurso) {
         return inscripcionRepository.existsByAlumnoIdAndCursoId(idAlumno, idCurso);
     }
 
-    // 🔹 Eliminar inscripción de un curso
+    //Eliminar inscripción de un curso
     @Transactional
     public boolean eliminarInscripcion(Long alumnoId, Long cursoId) {
         if (inscripcionRepository.existsByAlumnoIdAndCursoId(alumnoId, cursoId)) {
