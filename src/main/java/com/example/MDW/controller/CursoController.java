@@ -5,6 +5,7 @@ import com.example.MDW.model.Curso;
 import com.example.MDW.model.Inscripcion;
 import com.example.MDW.model.Persona;
 import com.example.MDW.model.Profesor;
+import com.example.MDW.service.CarritoService;
 import com.example.MDW.service.CursoService;
 import com.example.MDW.service.InscripcionService;
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +29,9 @@ public class CursoController {
     private final InscripcionService inscripcionService;
 
     @Autowired
+    private CarritoService carritoService;
+
+    @Autowired
     public CursoController(CursoService cursoService, InscripcionService inscripcionService) {
         this.cursoService = cursoService;
         this.inscripcionService = inscripcionService;
@@ -35,9 +39,9 @@ public class CursoController {
 
     @PostMapping("/inscribirse")
     public String inscribirse(@RequestParam Long courseId,
-            @RequestParam String registrationDate,
-            HttpSession session,
-            RedirectAttributes redirectAttrs) {
+                              @RequestParam String registrationDate,
+                              HttpSession session,
+                              RedirectAttributes redirectAttrs) {
         Persona persona = (Persona) session.getAttribute("personaLogueado");
         if (persona == null || persona.getAlumno() == null) {
             redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para inscribirte en un curso.");
@@ -67,8 +71,8 @@ public class CursoController {
 
     @PostMapping("/desinscribirse")
     public String desinscribirse(@RequestParam Long courseId,
-            HttpSession session,
-            RedirectAttributes redirectAttrs) {
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttrs) {
         Persona persona = (Persona) session.getAttribute("personaLogueado");
         if (persona == null) {
             redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para gestionar tus cursos.");
@@ -149,13 +153,13 @@ public class CursoController {
 
     @PostMapping("/crear")
     public String crearCurso(@RequestParam String nombre,
-            @RequestParam String descripcion,
-            @RequestParam("imagen") MultipartFile imagen,
-            @RequestParam int horas,
-            @RequestParam double precio,
-            @RequestParam String nivel,
-            HttpSession session,
-            RedirectAttributes redirectAttrs) {
+                             @RequestParam String descripcion,
+                             @RequestParam("imagen") MultipartFile imagen,
+                             @RequestParam int horas,
+                             @RequestParam double precio,
+                             @RequestParam String nivel,
+                             HttpSession session,
+                             RedirectAttributes redirectAttrs) {
 
         Persona persona = (Persona) session.getAttribute("personaLogueado");
         if (persona == null || persona.getProfesor() == null) {
@@ -199,13 +203,13 @@ public class CursoController {
 
     @PostMapping("/editar")
     public String editarCurso(@RequestParam Long id,
-            @RequestParam String nombre,
-            @RequestParam("imagen") MultipartFile imagen,
-            @RequestParam String descripcion,
-            @RequestParam int horas,
-            @RequestParam double precio,
-            @RequestParam String nivel,
-            RedirectAttributes redirectAttrs) {
+                              @RequestParam String nombre,
+                              @RequestParam("imagen") MultipartFile imagen,
+                              @RequestParam String descripcion,
+                              @RequestParam int horas,
+                              @RequestParam double precio,
+                              @RequestParam String nivel,
+                              RedirectAttributes redirectAttrs) {
 
         System.out.println("ID recibido: " + id);
         System.out.println("Nombre recibido: " + nombre);
@@ -259,6 +263,63 @@ public class CursoController {
         cursoService.eliminar(id);
         redirectAttrs.addFlashAttribute("success", "Curso eliminado correctamente.");
         return "redirect:/cursos/gestion";
+    }
+
+    // ========== MÉTODOS DEL CARRITO ==========
+
+    @PostMapping("/agregar-al-carrito")
+    public String agregarAlCarrito(@RequestParam Long courseId,
+                                   HttpSession session,
+                                   RedirectAttributes redirectAttrs) {
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        if (persona == null || persona.getAlumno() == null) {
+            redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para agregar cursos al carrito.");
+            return "redirect:/cursos";
+        }
+
+        Alumno alumno = persona.getAlumno();
+        Curso curso = cursoService.findById(courseId);
+
+        if (curso == null) {
+            redirectAttrs.addFlashAttribute("error", "El curso no existe.");
+            return "redirect:/cursos";
+        }
+
+        // Verificar si ya está inscrito
+        if (inscripcionService.existeInscripcion(alumno.getId(), courseId)) {
+            redirectAttrs.addFlashAttribute("error", "Ya estás inscrito en este curso.");
+            return "redirect:/cursos";
+        }
+
+        boolean agregado = carritoService.agregarAlCarrito(alumno, curso);
+
+        if (agregado) {
+            redirectAttrs.addFlashAttribute("success", "Curso agregado al carrito.");
+        } else {
+            redirectAttrs.addFlashAttribute("error", "El curso ya está en tu carrito.");
+        }
+
+        return "redirect:/cursos";
+    }
+
+    @PostMapping("/eliminar-del-carrito")
+    public String eliminarDelCarrito(@RequestParam Long courseId,
+                                     HttpSession session,
+                                     RedirectAttributes redirectAttrs) {
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        if (persona == null || persona.getAlumno() == null) {
+            return "redirect:/login";
+        }
+
+        boolean eliminado = carritoService.eliminarDelCarrito(persona.getAlumno().getId(), courseId);
+
+        if (eliminado) {
+            redirectAttrs.addFlashAttribute("success", "Curso eliminado del carrito.");
+        } else {
+            redirectAttrs.addFlashAttribute("error", "No se pudo eliminar el curso.");
+        }
+
+        return "redirect:/carrito";
     }
 
 }

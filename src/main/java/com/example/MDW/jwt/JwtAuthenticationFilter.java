@@ -105,7 +105,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // ✅ Método auxiliar para limpiar cookies
+    // ✅ Metodo auxiliar para limpiar cookies
     private void limpiarCookies(HttpServletResponse response) {
         Cookie cookie = new Cookie("JWT_TOKEN", null);
         cookie.setHttpOnly(true);

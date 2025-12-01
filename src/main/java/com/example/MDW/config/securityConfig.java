@@ -58,11 +58,13 @@ public class securityConfig {
                                 "/Nosotros",
                                 "/niveles",
                                 "/cursos",
+                                "/carrito",
                                 "/css/**",
                                 "/img/**",
                                 "/js/**",
                                 "/*.pdf"
                         ).permitAll()
+                        .requestMatchers("/admin/**", "/gestion-cursos").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
