@@ -23,11 +23,11 @@
         private String password;
         private LocalDate fecha_creacion = LocalDate.now();
 
-        //sRelación bidireccional con Alumno
+        // 🔹 Relación bidireccional con Alumno
         @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
         private Alumno alumno;
 
-        //Relación bidireccional con Profesor
+        // 🔹 Relación bidireccional con Profesor
         @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
         private Profesor profesor;
 

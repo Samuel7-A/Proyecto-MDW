@@ -35,24 +35,23 @@ public class CursoController {
 
     @PostMapping("/inscribirse")
     public String inscribirse(@RequestParam Long courseId,
-                              @RequestParam String registrationDate,
-                              HttpSession session,
-                              RedirectAttributes redirectAttrs) {
+            @RequestParam String registrationDate,
+            HttpSession session,
+            RedirectAttributes redirectAttrs) {
         Persona persona = (Persona) session.getAttribute("personaLogueado");
         if (persona == null || persona.getAlumno() == null) {
-            //VALIDACION
-            redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para inscribirte en un curso."); //El usuario debe estar logueado y ser un alumno.
+            redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para inscribirte en un curso.");
             return "redirect:/cursos";
         }
 
         Alumno alumno = persona.getAlumno();
-        Curso curso = cursoService.findById(courseId); //Validación: Se busca el curso por su ID.
-        if (curso == null) { //El curso debe existir.
+        Curso curso = cursoService.findById(courseId);
+        if (curso == null) {
             redirectAttrs.addFlashAttribute("error", "El curso no existe.");
             return "redirect:/cursos";
         }
 
-        //Validación de duplicado antes de registrar
+        // 🔹 Validación de duplicado antes de registrar
         if (inscripcionService.existeInscripcion(alumno.getId(), courseId)) {
             redirectAttrs.addFlashAttribute("error", "Ya estás inscrito en este curso.");
             return "redirect:/cursos";
@@ -90,28 +89,23 @@ public class CursoController {
     }
 
     // 🔹 Listar cursos
-  @GetMapping
-public String listarCursos(Model model, HttpSession session) {
-    List<Curso> cursos = cursoService.listarCursos();
-    model.addAttribute("cursos", cursos);
+    @GetMapping
+    public String listarCursos(Model model, HttpSession session) {
+        List<Curso> cursos = cursoService.listarCursos();
+        model.addAttribute("cursos", cursos);
 
-    // 🔹 Obtener persona logueada desde sesión
-    Persona persona = (Persona) session.getAttribute("personaLogueado");
-    model.addAttribute("personaLogueado", persona);
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        model.addAttribute("personaLogueado", persona);
 
-    // 🔹 Mostrar cursos inscritos en el sidebar si hay sesión activa
-    if (persona != null && persona.getAlumno() != null) {
-        Alumno alumno = persona.getAlumno();
-        List<Curso> cursosInscritos = inscripcionService.obtenerCursosPorAlumno(alumno);
-        model.addAttribute("cursosInscritosSidebar", cursosInscritos);
-    } else {
-        model.addAttribute("cursosInscritosSidebar", List.of());
-    }
+        if (persona != null && persona.getAlumno() != null) {
+            List<Curso> cursosInscritos = inscripcionService.obtenerCursosPorAlumno(persona.getAlumno());
+            model.addAttribute("cursosInscritosSidebar", cursosInscritos);
+        }
 
         return "cursos";
     }
 
-    // Mostrar los cursos en los que el alumno está inscrito
+    // 🔹 Mostrar los cursos en los que el alumno está inscrito
     @GetMapping("/mis-cursos")
     public String misCursos(Model model, HttpSession session) {
         Persona persona = (Persona) session.getAttribute("personaLogueado");
@@ -135,12 +129,16 @@ public String listarCursos(Model model, HttpSession session) {
             return "redirect:/login";
         }
 
-        // ✅ Log para verificar el ID del profesor
-        System.out.println("ID del profesor: " + persona.getProfesor().getIdProfesor());
+        Long idProfesor = persona.getProfesor().getIdProfesor();
+        System.out.println("ID del profesor: " + idProfesor);
 
         List<Curso> cursos = cursoService.obtenerCursosPorProfesor(idProfesor);
 
-        // ✅ Log para verificar cuántos cursos se obtienen
+        // ✅ Evitar null
+        if (cursos == null) {
+            cursos = List.of();
+        }
+
         System.out.println("Cursos encontrados: " + cursos.size());
 
         model.addAttribute("cursos", cursos);
@@ -151,13 +149,13 @@ public String listarCursos(Model model, HttpSession session) {
 
     @PostMapping("/crear")
     public String crearCurso(@RequestParam String nombre,
-                            @RequestParam String descripcion,
-                            @RequestParam("imagen") MultipartFile imagen,
-                            @RequestParam int horas,
-                            @RequestParam double precio,
-                            @RequestParam String nivel,
-                            HttpSession session,
-                            RedirectAttributes redirectAttrs) {
+            @RequestParam String descripcion,
+            @RequestParam("imagen") MultipartFile imagen,
+            @RequestParam int horas,
+            @RequestParam double precio,
+            @RequestParam String nivel,
+            HttpSession session,
+            RedirectAttributes redirectAttrs) {
 
         Persona persona = (Persona) session.getAttribute("personaLogueado");
         if (persona == null || persona.getProfesor() == null) {
@@ -168,9 +166,9 @@ public String listarCursos(Model model, HttpSession session) {
         Profesor profesor = persona.getProfesor();
 
         try {
-            String nombreImagen = "default.jpg"; // Imagen por defecto.
+            String nombreImagen = "default.jpg";
 
-            //  Si el usuario sube una imagen, la guardamos físicamente
+            // 📁 Si el usuario sube una imagen, la guardamos físicamente
             if (imagen != null && !imagen.isEmpty()) {
                 // Carpeta donde guardarás las imágenes
                 String carpeta = "src/main/resources/static/img/";
@@ -185,7 +183,7 @@ public String listarCursos(Model model, HttpSession session) {
                         java.nio.file.StandardCopyOption.REPLACE_EXISTING);
             }
 
-            // Crear curso con el nombre de la imagen (guardado en BD)
+            // 🧩 Crear curso con el nombre de la imagen (guardado en BD)
             Curso nuevoCurso = new Curso(null, nombre, descripcion, nombreImagen, horas, precio, nivel, profesor);
             cursoService.guardar(nuevoCurso);
 

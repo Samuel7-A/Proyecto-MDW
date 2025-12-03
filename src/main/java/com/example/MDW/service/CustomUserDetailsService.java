@@ -25,11 +25,13 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Usuario no encontrado con email: " + email);
         }
 
+        String rol = persona.getProfesor() != null ? "ROLE_ADMIN" : "ROLE_USER";
+
         // Retorna un UserDetails de Spring Security
         return User.builder()
                 .username(persona.getEmail())
                 .password(persona.getPassword())
-                .authorities(new ArrayList<>()) // Puedes agregar roles aquí si los tienes
+                .authorities(rol) // Puedes agregar roles aquí
                 .build();
     }
 

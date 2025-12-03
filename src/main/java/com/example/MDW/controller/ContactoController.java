@@ -13,30 +13,30 @@ import com.example.MDW.service.ContactoService;
 @Controller
 public class ContactoController {
 
-        @Autowired
-        ContactoService contactoserv;
+    @Autowired
+    ContactoService contactoserv;
 
-        @PostMapping("/contacto")
-        public String contacto(@RequestParam String nombre,
-                        @RequestParam String apellidoPaterno,
-                        @RequestParam String apellidoMaterno,
-                        @RequestParam String distrito,
-                        @RequestParam String dni,
-                        @RequestParam String telefono,
-                        @RequestParam String nivel,
-                        @RequestParam String email,
-                        RedirectAttributes redirectAttrs) {
-                Contacto nuevoRegistro = new Contacto(nombre, apellidoPaterno, apellidoMaterno, distrito, dni, telefono,
-                                nivel,
-                                email);
+    @PostMapping("/contacto")
+    public String contacto(@RequestParam String nombre,
+                           @RequestParam String apellidoPaterno,
+                           @RequestParam String apellidoMaterno,
+                           @RequestParam String distrito,
+                           @RequestParam String dni,
+                           @RequestParam String telefono,
+                           @RequestParam String nivel,
+                           @RequestParam String email,
+                           RedirectAttributes redirectAttrs) {
+        Contacto nuevoRegistro = new Contacto(nombre, apellidoPaterno, apellidoMaterno, distrito, dni, telefono,
+                nivel,
+                email);
 
-                contactoserv.guardarContacto(nuevoRegistro);
+        contactoserv.guardarContacto(nuevoRegistro);
 
-                redirectAttrs.addFlashAttribute("mensaje",
-                                "¡Gracias por contactarnos, " + nombre + "! Te responderemos pronto.");
+        redirectAttrs.addFlashAttribute("success",
+                "¡Gracias por contactarnos, " + nombre + "! Te responderemos pronto.");
 
-                return "redirect:/";
+        return "redirect:/";
 
-        }
+    }
 
 }
