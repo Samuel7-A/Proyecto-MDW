@@ -34,30 +34,4 @@ public class HomeController {
         }
         return "index";
     }
-
-    @PostMapping("/convertirProfesor")
-    public String convertirProfesor(HttpSession session, RedirectAttributes redirectAttrs) {
-        Persona persona = (Persona) session.getAttribute("personaLogueado");
-
-        if (persona == null) {
-            redirectAttrs.addFlashAttribute("error", "Debes iniciar sesión para realizar esta acción.");
-            return "redirect:/";
-        }
-
-        if (persona.getProfesor() == null) {
-            Profesor profesor = new Profesor(persona, "Sin especialidad");
-            persona.setProfesor(profesor);
-            personaService.registrar(persona);
-
-            // Actualizar sesión
-            session.setAttribute("personaLogueado", persona);
-
-            redirectAttrs.addFlashAttribute("success", "¡Felicidades! Ahora eres profesor.");
-        } else {
-            redirectAttrs.addFlashAttribute("info", "Ya eres profesor.");
-            return "redirect:/";
-        }
-
-        return "redirect:/";
-    }
 }

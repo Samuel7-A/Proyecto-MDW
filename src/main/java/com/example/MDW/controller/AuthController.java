@@ -62,6 +62,7 @@ public class AuthController {
 
             Alumno alumno = new Alumno(nuevaPersona);
             nuevaPersona.setAlumno(alumno);
+            nuevaPersona.setRol("ROLE_USER");
 
             Persona personaGuardada = personaService.registrar(nuevaPersona);
 
