@@ -1,7 +1,7 @@
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
 
-        <a class="navbar-brand text-light fw-bold" href="index">MDW</a>
+        <a class="navbar-brand text-light fw-bold" href="/">MDW</a>
         <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -18,11 +18,9 @@
                         Cursos
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownCursos">
-                        <li><a class="dropdown-item" href="../cursos#curso1">Introducción a la
-                            Ciberseguridad</a></li>
-                        <li><a class="dropdown-item" href="../cursos#curso2">Redes y Conectividad</a></li>
-                        <li><a class="dropdown-item" href="../cursos#curso3">Seguridad en Redes Avanzada</a>
-                        </li>
+                        <li><a class="dropdown-item" href="/cursos#curso1">Introducción a la Ciberseguridad</a></li>
+                        <li><a class="dropdown-item" href="/cursos#curso2">Redes y Conectividad</a></li>
+                        <li><a class="dropdown-item" href="/cursos#curso3">Seguridad en Redes Avanzada</a></li>
                     </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link text-light" href="/niveles">Niveles</a></li>
@@ -33,26 +31,29 @@
                         data-bs-target="#loginModal">Login</button>
             </div>
 
+            <div th:if="${personaLogueado != null}" class="d-flex align-items-center">
+                <span class="text-white fw-bold ms-2" th:text="${personaLogueado.nombre}">Usuario</span>
 
+                <form th:action="@{/auth/logout}" method="post" class="ms-2">
+                    <button type="submit" class="btn btn-outline-danger">Cerrar sesión</button>
+                </form>
 
-            <div th:if="${personaLogueado != null}">
-                <span class="text-white fw-bold ms-2" th:text="${personaLogueado.nombre}">persona</span>
-
-                <a href="/logout" class="btn btn-outline-danger ms-2">Cerrar sesión</a>
                 <button class="btn btn-outline-light ms-2" data-bs-toggle="modal"
                         data-bs-target="#sidebarModal"> <i class="bi bi-list fs-3"></i>
+                </button>
             </div>
 
-            <!-- Modal Login -->
             <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
-                    <form class="modal-content" th:action="@{/login}" method="post">
+                    <form class="modal-content" th:action="@{/auth/login}" method="post">
                         <div class="modal-header">
                             <h5 class="modal-title">Inicio de Sesión</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
+                            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
                             <div class="mb-3">
                                 <label for="loginEmail" class="form-label">Email</label>
                                 <input type="text" class="form-control" id="loginEmail" name="email"
@@ -74,11 +75,10 @@
                 </div>
             </div>
 
-            <!-- Modal Registro -->
             <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
-                    <form class="modal-content" th:action="@{/register}" method="post" autocomplete="off">
+                    <form class="modal-content" th:action="@{/auth/register}" method="post" autocomplete="off">
                         <div class="modal-header">
                             <h5 class="modal-title">Crear una Cuenta</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -115,63 +115,18 @@
                 </div>
             </div>
 
-            <!-- Modal Contactanos -->
             <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-scrollable">
                     <div class="modal-content">
                         <form th:action="@{/contacto}" method="post">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h5 class="modal-title">Formulario de contacto</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row g-3 mb-3">
-                                    <div class="col-md-4">
-                                        <label for="nombre" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" required>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
-                                        <input type="text" class="form-control" id="apellidoPaterno" name="apellidoPaterno" required>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
-                                        <input type="text" class="form-control" id="apellidoMaterno" name="apellidoMaterno" required>
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-3">
-                                    <div class="col-md-6">
-                                        <label for="distrito" class="form-label">Distrito</label>
-                                        <input type="text" class="form-control" id="distrito" name="distrito" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="dni" class="form-label">DNI</label>
-                                        <input type="text" class="form-control" id="dni" name="dni" required pattern="\d{8}"
-                                               title="El DNI debe tener 8 dígitos.">
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-3">
-                                    <div class="col-md-6">
-                                        <label for="telefono" class="form-label">Teléfono/Celular</label>
-                                        <input type="tel" class="form-control" id="telefono" name="telefono" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="nivel" class="form-label">Nivel</label>
-                                        <select class="form-select" id="nivel" name="nivel" required>
-                                            <option selected disabled value="">Selecciona un nivel...</option>
-                                            <option>Escolar</option>
-                                            <option>Academia</option>
-                                            <option>Universitario</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Correo Electrónico</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="email@ejemplo.com" required>
-                                    <div id="emailHelp" class="form-text">Nunca compartiremos tu correo.</div>
-                                </div>
+                                <p>Formulario de contacto aquí...</p>
                             </div>
-                            <div class="modal-footer px-0">
+                            <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                 <button type="submit" class="btn btn-primary">Enviar</button>
                             </div>
@@ -182,7 +137,7 @@
 
         </div>
     </div>
-    <!-- El navbar para el persona logueado -->
+
     <div th:if="${personaLogueado != null}">
         <div class="modal fade" id="sidebarModal" tabindex="-1" aria-labelledby="sidebarModalLabel"
              aria-hidden="true">
@@ -202,16 +157,19 @@
                                class="list-group-item list-group-item-action border-0">
                                 <i class="bi bi-journal me-2"></i> Mis cursos
                             </a>
+
                             <form action="/convertirProfesor" method="post" class="list-group-item border-0 p-0 m-0">
-                                <button type="submit" class="btn w-100 text-start border-0">
+                                <button type="submit" class="btn w-100 text-start border-0 list-group-item-action">
                                     <i class="bi bi-mortarboard me-2"></i> Convertirme en profesor
                                 </button>
                             </form>
-                            <a href="/gestion-cursos"
-                            class="list-group-item list-group-item-action border-0"
-                            th:if="${personaLogueado.profesor != null && personaLogueado.profesor != null}">
+
+                            <a href="/cursos/gestion"
+                               class="list-group-item list-group-item-action border-0"
+                               th:if="${personaLogueado.profesor != null}">
                                 <i class="bi bi-gear me-2"></i> Gestión de Cursos
                             </a>
+
                             <a href="#" class="list-group-item list-group-item-action border-0">
                                 <i class="bi bi-question-circle me-2"></i> Ayuda
                             </a>
@@ -231,12 +189,40 @@
                             </ul>
                         </div>
                         <div class="modal-footer border-0 px-4 pb-4">
-                            <a href="/logout" class="btn btn-outline-danger w-100">Cerrar Sesion</a>
+                            <form th:action="@{/auth/logout}" method="post" class="w-100">
+                                <button type="submit" class="btn btn-outline-danger w-100">Cerrar Sesion</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </nav>
+<script>
+    // ⏱️ Monitorear inactividad del usuario
+    let inactivityTimeout;
+    const INACTIVITY_TIME = 15 * 60 * 1000; // 15 minutos en milisegundos
+
+    function resetInactivityTimer() {
+        clearTimeout(inactivityTimeout);
+
+        inactivityTimeout = setTimeout(() => {
+            // Si el usuario está logueado, mostrar alerta
+            const userName = document.querySelector('.navbar-nav .text-white.fw-bold');
+            if (userName) {
+                alert('Tu sesión ha expirado por inactividad. Por favor, inicia sesión de nuevo.');
+                window.location.href = '/';
+            }
+        }, INACTIVITY_TIME);
+    }
+
+    // Detectar actividad del usuario
+    document.addEventListener('click', resetInactivityTimer);
+    document.addEventListener('keypress', resetInactivityTimer);
+    document.addEventListener('mousemove', resetInactivityTimer);
+    document.addEventListener('scroll', resetInactivityTimer);
+
+    // Iniciar timer al cargar la página
+    window.addEventListener('load', resetInactivityTimer);
+</script>

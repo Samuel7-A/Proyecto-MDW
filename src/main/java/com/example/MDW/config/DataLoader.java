@@ -1,7 +1,6 @@
 
 package com.example.MDW.config;
 
-import com.example.MDW.Repositorio.AlumnoRepository;
 import com.example.MDW.Repositorio.PersonaRepository;
 import com.example.MDW.Repositorio.ProfesorRepository;
 import com.example.MDW.model.Alumno;
@@ -9,6 +8,7 @@ import com.example.MDW.model.Curso;
 import com.example.MDW.model.Profesor;
 import com.example.MDW.Repositorio.CursoRepository;
 import com.example.MDW.model.Persona;
+import com.example.MDW.service.PersonaService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,9 @@ public class DataLoader implements CommandLineRunner {
     private PersonaRepository personaRepository;
     @Autowired
     private ProfesorRepository profesorRepository;
-    
+    @Autowired
+    private PersonaService personaService;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -31,10 +33,13 @@ public class DataLoader implements CommandLineRunner {
         Persona persona = personaRepository.findByEmail(email);
 
         if (persona == null) {
+            // Crear nueva persona con contraseña que será encriptada
             persona = new Persona("Ariel", "Pérez", email, "123");
             Alumno alumno = new Alumno(persona);
             persona.setAlumno(alumno);
-            personaRepository.save(persona);
+
+            // Usar PersonaService para que encripte la contraseña
+            persona = personaService.registrar(persona);
         }
 
         // Crear profesor vinculado a esa persona si no existe
