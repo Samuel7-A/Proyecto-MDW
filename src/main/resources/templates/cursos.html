@@ -86,10 +86,20 @@
                             </span>
                         </div>
 
-                        <button class="btn btn-primary w-100" data-bs-toggle="modal"
-                            th:attr="data-bs-target=${'#modal-' + curso.id}">
-                            Saber más
-                        </button>
+                        <!-- Botones de acción -->
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" data-bs-toggle="modal"
+                                th:attr="data-bs-target=${'#modal-' + curso.id}">
+                                <i class="bi bi-info-circle"></i> Saber más
+                            </button>
+                            
+                            <!-- Botón agregar al carrito -->
+                            <form th:action="@{/carrito/agregar/{id}(id=${curso.idCurso})}" method="post">
+                                <button type="submit" class="btn btn-outline-success w-100">
+                                    <i class="bi bi-cart-plus"></i> Agregar al carrito
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -122,7 +132,7 @@
                                 <input type="hidden" name="registrationDate"
                                        th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" />
 
-                                <button type="submit" class="btn btn-primary">Registrarse</button>
+                            
                             </form>
                         </div>
                     </div>

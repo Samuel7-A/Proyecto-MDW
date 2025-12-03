@@ -56,6 +56,16 @@ public class InscripcionService {
         return inscripcionRepository.existsByAlumnoIdAndCursoId(idAlumno, idCurso);
     }
 
+    // Verifica si el alumno está inscrito en el curso (usado en carrito)
+    public boolean estaInscrito(Alumno alumno, Curso curso) {
+        return inscripcionRepository.existsByAlumnoIdAndCursoId(alumno.getId(), curso.getIdCurso());
+    }
+
+    // Registrar inscripción (usado desde carrito al confirmar compra)
+    public Inscripcion registrarInscripcion(Inscripcion inscripcion) {
+        return inscripcionRepository.save(inscripcion);
+    }
+
     //Eliminar inscripción de un curso
     @Transactional
     public boolean eliminarInscripcion(Long alumnoId, Long cursoId) {

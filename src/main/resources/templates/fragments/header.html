@@ -33,6 +33,16 @@
             </div>
 
             <div th:if="${personaLogueado != null}" class="d-flex align-items-center">
+                <!-- Icono del carrito con contador -->
+                <a href="/carrito" class="btn btn-outline-light position-relative me-2">
+                    <i class="bi bi-cart3"></i>
+                    <span th:if="${cantidadCarrito > 0}" 
+                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          th:text="${cantidadCarrito}">
+                        0
+                    </span>
+                </a>
+
                 <span class="text-white fw-bold ms-2" th:text="${personaLogueado.nombre}">Usuario</span>
 
                 <form th:action="@{/auth/logout}" method="post" class="ms-2">

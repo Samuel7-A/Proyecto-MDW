@@ -9,6 +9,7 @@ import com.example.MDW.model.Persona;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import com.example.MDW.service.InscripcionService;
+import com.example.MDW.service.CarritoService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
@@ -16,6 +17,12 @@ import java.util.List;
 
 @ControllerAdvice
 public class GlobalControllerAdvice {
+
+    @Autowired
+    private InscripcionService inscripcionService;
+
+    @Autowired
+    private CarritoService carritoService;
 
     @ModelAttribute
     public void addUserToModel(HttpSession session, Model model) {
@@ -26,9 +33,6 @@ public class GlobalControllerAdvice {
         
     }
 
-    @Autowired
-    private InscripcionService inscripcionService;
-
     @ModelAttribute("cursosInscritosSidebar")
     public List<Curso> cursosInscritosSidebar(HttpSession session) {
         Persona persona = (Persona) session.getAttribute("personaLogueado");
@@ -36,9 +40,19 @@ public class GlobalControllerAdvice {
             Alumno alumno = persona.getAlumno();
             return inscripcionService.obtenerCursosPorAlumno(alumno);
         }
-        return Collections.emptyList(); //// Devuelve una lista vacía si no hay usuario.
+        return Collections.emptyList(); // Devuelve una lista vacía si no hay usuario.
+    }
 
-    } 
+    // Contador de items en el carrito (para mostrar en el header)
+    @ModelAttribute("cantidadCarrito")
+    public int cantidadCarrito(HttpSession session) {
+        Persona persona = (Persona) session.getAttribute("personaLogueado");
+        if (persona != null && persona.getAlumno() != null) {
+            Alumno alumno = persona.getAlumno();
+            return carritoService.contarItems(alumno.getId());
+        }
+        return 0;
+    }
 }
 
 
