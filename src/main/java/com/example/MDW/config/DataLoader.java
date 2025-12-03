@@ -37,7 +37,6 @@ public class DataLoader implements CommandLineRunner {
             persona = new Persona("Ariel", "Pérez", email, "123");
             Alumno alumno = new Alumno(persona);
             persona.setAlumno(alumno);
-            persona.setRol("ROLE_ADMIN");
 
             // Usar PersonaService para que encripte la contraseña
             persona = personaService.registrar(persona);

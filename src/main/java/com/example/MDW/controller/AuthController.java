@@ -60,9 +60,6 @@ public class AuthController {
                     request.getPassword()
             );
 
-            // ✅ Asignar rol USER por defecto (alumno)
-            nuevaPersona.setRol("ROLE_USER");
-
             Alumno alumno = new Alumno(nuevaPersona);
             nuevaPersona.setAlumno(alumno);
 
@@ -117,7 +114,7 @@ public class AuthController {
             session.setAttribute("personaLogueado", persona);
 
             redirectAttrs.addFlashAttribute("success", "Bienvenido " + persona.getNombre());
-            return "redirect:/";
+            return "redirect:/cursos";
 
         } catch (BadCredentialsException e) {
             redirectAttrs.addFlashAttribute("error", "Credenciales incorrectas");
