@@ -36,7 +36,7 @@
                 <!-- Icono del carrito con contador -->
                 <a href="/carrito" class="btn btn-outline-light position-relative me-2">
                     <i class="bi bi-cart3"></i>
-                    <span th:if="${cantidadCarrito > 0}" 
+                    <span th:if="${cantidadCarrito > 0}"
                           class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                           th:text="${cantidadCarrito}">
                         0
@@ -126,18 +126,68 @@
                 </div>
             </div>
 
+            <!-- Modal Contactanos -->
             <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-scrollable">
                     <div class="modal-content">
                         <form th:action="@{/contacto}" method="post">
                             <div class="modal-header">
-                                <h5 class="modal-title">Formulario de contacto</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <h5 class="modal-title" id="modalLabel">Formulario de contacto</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p>Formulario de contacto aquí...</p>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-4">
+                                        <label for="nombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
+                                        <input type="text" class="form-control" id="apellidoPaterno"
+                                               name="apellidoPaterno" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
+                                        <input type="text" class="form-control" id="apellidoMaterno"
+                                               name="apellidoMaterno" required>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="distrito" class="form-label">Distrito</label>
+                                        <input type="text" class="form-control" id="distrito" name="distrito" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="dni" class="form-label">DNI</label>
+                                        <input type="text" class="form-control" id="dni" name="dni" required
+                                               pattern="\d{8}"
+                                               title="El DNI debe tener 8 dígitos.">
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="telefono" class="form-label">Teléfono/Celular</label>
+                                        <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="nivel" class="form-label">Nivel</label>
+                                        <select class="form-select" id="nivel" name="nivel" required>
+                                            <option selected disabled value="">Selecciona un nivel...</option>
+                                            <option>Escolar</option>
+                                            <option>Academia</option>
+                                            <option>Universitario</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                           placeholder="email@ejemplo.com" required>
+                                    <div id="emailHelp" class="form-text">Nunca compartiremos tu correo.</div>
+                                </div>
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer px-0">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                 <button type="submit" class="btn btn-primary">Enviar</button>
                             </div>

@@ -56,6 +56,7 @@ public class securityConfig {
                                 "/login",
                                 "/register",
                                 "/Nosotros",
+                                "/contacto",
                                 "/niveles",
                                 "/cursos",
                                 "/carrito",
